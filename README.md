@@ -1,5 +1,21 @@
 # Configurations
 
+## Machine Lifecycle
+
+### Deploy A Machine
+1. Install nixos
+2. Add the following to /etc/nixos/configuration.nix
+  a. `nix.settings.experimental-features = [ "nix-command" "flakes" ];`
+  b. `services.openssh.enable = true;`
+  c. `git` into environment.pkgs
+3. ssh into the machine
+4. `ssh-keygen -t rsa -b 4096 -C "{github email}"`
+5. `cat ~/.ssh/id_rsa.pub` and copy into deploy keys for the repository
+6. `cd /etc/nixos`
+7. `sudo mkdir configurations`
+8. `sudo chown admin configurations`
+9. `git clone git@github.com:ActuallyHarry/configurations.git`
+
 ## File Structure
 ```
 configurations/
