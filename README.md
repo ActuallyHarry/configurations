@@ -5,9 +5,9 @@
 ### Deploy A Machine
 1. Install nixos
 2. Add the following to /etc/nixos/configuration.nix
-  a. `nix.settings.experimental-features = [ "nix-command" "flakes" ];`
-  b. `services.openssh.enable = true;`
-  c. `git` into environment.pkgs
+  - `nix.settings.experimental-features = [ "nix-command" "flakes" ];`
+  - `services.openssh.enable = true;`
+  - `git` into environment.pkgs
 3. ssh into the machine
 4. `ssh-keygen -t rsa -b 4096 -C "{github email}"`
 5. `cat ~/.ssh/id_rsa.pub` and copy into deploy keys for the repository
@@ -15,6 +15,38 @@
 7. `sudo mkdir configurations`
 8. `sudo chown admin configurations`
 9. `git clone git@github.com:ActuallyHarry/configurations.git`
+10. `sudo nixos-rebuild switch --flake ./#{hostname}`
+ 
+### Create New Machine Configuration
+1. Create Branch from main of Name: machine-{hostname}
+2. Add the following to flake.nix in the nixosConfigurations setting
+```
+{hostname} = nixpkgs.lib.nixosSystem {
+  specialArgs = {inherit inputs; inherit system; };
+
+  modules = [
+    ./system/{hostname}/configuration.nix
+  ];
+};
+```
+3. `mkdir /etc/nixos/configurations/systems/{hostname}`
+4. `ln /etc/nixos/hardware.nix /etc/nixos/configurations/systems/{hostname}/hardware.nix`
+5. `nano /etc/nixos/systems/{hostname}/configuration.nix`
+6. `git add --all`
+7. `sudo nixos-rebuild switch --flake ./#{hostname}`
+
+### Update Procedure
+1. `git pull origin  main`
+2. `git checkout machine-{hostname}`
+3. `git merge main`
+4. `nix flake update`
+5. `git add --all`
+6. `sudo nixos-rebuild switch --flake ./#{hostname}`
+7. commit and push to github
+8. create pull request to main
+
+> This way main should always be recreatable but will contain the most up to date lock file, but allows machines to be updated indpendantly on their own branch
+
 
 ## File Structure
 ```
@@ -34,7 +66,7 @@ configurations/
 │   ├── ssh.nix
 │   └── ...
 ├── systems/
-│   ├── system-name/
+│   ├── {system-name}/
 │   │   ├── configuration.nix
 │   │   └── hardware-configuration.nix (ln /etc/nixos/hardware.nix)
 │   └── ...
