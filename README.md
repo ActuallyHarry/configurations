@@ -25,13 +25,13 @@
   specialArgs = {inherit inputs; inherit system; };
 
   modules = [
-    ./system/{hostname}/configuration.nix
+    ./machines/{hostname}/configuration.nix
   ];
 };
 ```
-3. `mkdir /etc/nixos/configurations/systems/{hostname}`
-4. `ln /etc/nixos/hardware.nix /etc/nixos/configurations/systems/{hostname}/hardware.nix`
-5. `nano /etc/nixos/systems/{hostname}/configuration.nix`
+3. `mkdir /etc/nixos/configurations/machines/{hostname}`
+4. `ln /etc/nixos/hardware.nix /etc/nixos/configurations/machines/{hostname}/hardware.nix`
+5. `nano /etc/nixos/machines/{hostname}/configuration.nix`
 6. `git add --all`
 7. `sudo nixos-rebuild switch --flake ./#{hostname}`
 
@@ -65,7 +65,7 @@ configurations/
 │   ├── git.nix
 │   ├── ssh.nix
 │   └── ...
-├── systems/
+├── machines/
 │   ├── {system-name}/
 │   │   ├── configuration.nix
 │   │   └── hardware-configuration.nix (ln /etc/nixos/hardware.nix)
@@ -77,7 +77,7 @@ configurations/
 Contains shared system wide configurations
 ### Applications
 Contains application configuration
-### Systems
+### Machines
 Contains configuration.nix which only pulls in components form applications and modules, as well as any required specific configurations, includes a hardlink to hardware.nix which should be gitignored.
 ### Lib
 Contians any helper functions required
