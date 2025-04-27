@@ -15,7 +15,9 @@
 7. `sudo mkdir configurations`
 8. `sudo chown admin configurations`
 9. `git clone git@github.com:ActuallyHarry/configurations.git`
-10. `sudo nixos-rebuild switch --flake ./#{hostname}`
+10. `rm /etc/nixos/configurations/machines/{hostname}/hardware-configuration.nix`
+11. `ln /etc/nixos/hardware-configuration.nix /etc/nixos/configurations/machines/{hostname}/hardware-configuration.nix`
+12. `sudo nixos-rebuild switch --flake ./#{hostname}`
  
 ### Create New Machine Configuration
 1. Create Branch from main of Name: machine-{hostname}
@@ -30,7 +32,7 @@
 };
 ```
 3. `mkdir /etc/nixos/configurations/machines/{hostname}`
-4. `ln /etc/nixos/hardware.nix /etc/nixos/configurations/machines/{hostname}/hardware.nix`
+4. `ln /etc/nixos/hardware-configuration.nix /etc/nixos/configurations/machines/{hostname}/hardware-configuration.nix`
 5. `nano /etc/nixos/machines/{hostname}/configuration.nix`
 6. `git add --all`
 7. `sudo nixos-rebuild switch --flake ./#{hostname}`
