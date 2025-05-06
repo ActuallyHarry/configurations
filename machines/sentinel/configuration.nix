@@ -15,6 +15,7 @@
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
+    ../../applications/dns.nix
   ];
 
   boot.loader.grub.enable = true;
@@ -22,8 +23,20 @@
   boot.loader.grub.useOSProber = true;
 
   networking.hostName = "sentinel";
+  networking.useDHCP = false;
+  networking.interfaces = { 
+    ens18 = {
+      ipv4.addresses = [ { 
+        address = "192.168.1.2";
+        prefixLength = 24;
+      } ];
+    };
+  };
+  networking.defaultGateway = "192.168.1.1";
+  networking.nameservers = [ "192.168.1.2 192.168.1.1"];
   networking.networkmanager.enable = true;
 
+networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
