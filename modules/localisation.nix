@@ -3,7 +3,7 @@
 ################################################
 { config, pkgs, ... }:
 {
-  time.timeZone = "Australia/Melbourne"
+  time.timeZone = "Australia/Melbourne";
   
   i18n.defaultLocale = "en_AU.UTF-8";
 
