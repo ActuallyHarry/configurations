@@ -36,7 +36,6 @@
   networking.nameservers = [ "192.168.1.2 192.168.1.1"];
   networking.networkmanager.enable = true;
 
-networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
