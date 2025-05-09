@@ -16,12 +16,18 @@ in {
 
   # Open Firewall port
   networking.firewall.allowedTCPPorts = [ 53 ];
-
+  networking.firewall.allowedUDPPorts = [ 53 ];
   # Settings for Bind Service
   services.bind = {
     enable = true;
 
     forwarders = ["192.168.1.1"];
+
+    cacheNetworks = [
+      "127.0.0.0/24"
+      "::1/128"
+      "192.168.0.0/16"
+    ];
 
     zones = [ 
        {
