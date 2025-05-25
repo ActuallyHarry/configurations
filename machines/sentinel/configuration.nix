@@ -19,6 +19,7 @@
     ../../applications/ssh.nix
     ../../applications/dns.nix
     ../../applications/cloudflared.nix
+    ../../applications/postfix.nix
   ];
 
   boot.loader.grub.enable = true;

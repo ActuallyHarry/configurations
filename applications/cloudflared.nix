@@ -15,7 +15,7 @@
     enable = true;
     tunnels = {
      "6d99fdf2-0650-47b2-895a-f9297a57439d" = {
-       credentialsFile = "/run/secrets/cloudflared.json";
+       credentialsFile = "${config.sops.secrets."cloudflared.json".path}";
        default = "http_status:404";
      };
     };

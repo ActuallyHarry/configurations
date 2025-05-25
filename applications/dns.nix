@@ -75,11 +75,14 @@ in {
       facultas          A       192.168.1.251
 
       sentinel          A       192.168.1.2
-      vanguard          A       192.168.1.3
+      epistula          A       192.168.1.2
+
+
       horreum           A       192.168.1.4
       automaton         A       192.168.1.5
       theatre           A       192.168.1.11
-    
+
+      vanguard          A       192.168.1.3
       occultus          A       192.168.1.3
       auctoritas        A       192.168.1.3
 
