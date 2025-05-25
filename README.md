@@ -32,10 +32,11 @@
 };
 ```
 3. `mkdir /etc/nixos/configurations/machines/{hostname}`
-4. `ln /etc/nixos/hardware-configuration.nix /etc/nixos/configurations/machines/{hostname}/hardware-configuration.nix`
-5. `nano /etc/nixos/machines/{hostname}/configuration.nix`
-6. `git add --all`
-7. `sudo nixos-rebuild switch --flake ./#{hostname}`
+4. `sudo ln /etc/nixos/hardware-configuration.nix /etc/nixos/configurations/machines/{hostname}/hardware-configuration.nix`
+5. `chown admin /etc/nixos/configurations/machines/{hostname}/hardware-configuration.nix`
+6. `cp template-configuration.nix /etc/nixos/configurations/machines/vanguard/configuration.nix`
+7. `git add --all`
+8. `sudo nixos-rebuild switch --flake ./#{hostname}`
 
 ### Update Procedure
 1. `git pull origin  main`
@@ -77,13 +78,23 @@ configurations/
 ```
 ### Modules
 Contains shared system wide configurations
+
+#### sops
+Requires an age key best to copy it from other machine but if need to genetate
+- `mkdir -p ~/.config/sops/age`
+- `nix shell nixpkgs#age -c age-keygen -o ~/.config/sops/age/keys.txt`
+- IMPORTANT: Remove the comments in the file for using it with nix
+
+
 ### Applications
 Contains application configuration
 
-#### DNS
+#### dns
 - In order for DNS to start make sure that /etc/rndc.key is made - it as trouble sometimes
+
 
 ### Machines
 Contains configuration.nix which only pulls in components form applications and modules, as well as any required specific configurations, includes a hardlink to hardware.nix which should be gitignored.
 ### Lib
-Contians any helper functions required
+Contains any helper functions required
+
