@@ -92,7 +92,6 @@ Contains application configuration
 #### dns
 - In order for DNS to start make sure that /etc/rndc.key is made - it as trouble sometimes
 
-
 ### Machines
 Contains configuration.nix which only pulls in components form applications and modules, as well as any required specific configurations, includes a hardlink to hardware.nix which should be gitignored.
 ### Lib
