@@ -12,10 +12,14 @@
     ../../modules/localisation.nix
     ../../modules/nix_features.nix
     ../../modules/nix_store.nix
+    ../../modules/sops.nix
+    ../../modules/ssl_wildcard.nix
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
     ../../applications/dns.nix
+    ../../applications/cloudflared.nix
+    ../../applications/postfix.nix
   ];
 
   boot.loader.grub.enable = true;
@@ -36,7 +40,6 @@
   networking.nameservers = [ "192.168.1.2 192.168.1.1"];
   networking.networkmanager.enable = true;
 
-networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

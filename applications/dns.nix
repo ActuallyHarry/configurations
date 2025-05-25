@@ -14,11 +14,21 @@ in {
     bind
   ];
 
+  # Open Firewall port
+  networking.firewall.allowedTCPPorts = [ 53 ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
+
   # Settings for Bind Service
   services.bind = {
     enable = true;
 
     forwarders = ["192.168.1.1"];
+
+    cacheNetworks = [
+      "127.0.0.0/24"
+      "::1/128"
+      "192.168.0.0/16"
+    ];
 
     zones = [ 
        {
@@ -65,10 +75,16 @@ in {
       facultas          A       192.168.1.251
 
       sentinel          A       192.168.1.2
-      vanguard          A       192.168.1.3
+      epistula          A       192.168.1.2
+
+
       horreum           A       192.168.1.4
       automaton         A       192.168.1.5
       theatre           A       192.168.1.11
+
+      vanguard          A       192.168.1.3
+      occultus          A       192.168.1.3
+      auctoritas        A       192.168.1.3
 
       noxium            A       192.168.1.99
       
