@@ -17,6 +17,7 @@ in {
   # Open Firewall port
   networking.firewall.allowedTCPPorts = [ 53 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
+
   # Settings for Bind Service
   services.bind = {
     enable = true;
