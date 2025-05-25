@@ -78,6 +78,9 @@ in {
       horreum           A       192.168.1.4
       automaton         A       192.168.1.5
       theatre           A       192.168.1.11
+    
+      occultus          A       192.168.1.3
+      auctoritas        A       192.168.1.3
 
       noxium            A       192.168.1.99
       

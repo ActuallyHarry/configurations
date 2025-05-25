@@ -16,6 +16,7 @@
     ../../applications/git.nix
     ../../applications/ssh.nix
     ../../applications/dns.nix
+    ../../applications/cloudflared.nix
   ];
 
   boot.loader.grub.enable = true;
