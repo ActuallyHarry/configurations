@@ -4,7 +4,6 @@
   sops.secrets."acme.env" = {
     sopsFile = ../secrets/acme.env;
     format = "dotenv";
-    path = "/var/lib/acme.env";
     owner = "acme";
   };
 
@@ -20,7 +19,7 @@
       dnsResolver = "1.1.1.1:53";
       dnsProvider = "cloudflare";
       dnsPropagationCheck  = true;
-      environmentFile = "/var/lib/acme.env";
+      environmentFile = "/run/secrets/acme.env";
       
     }; 
   };

@@ -12,6 +12,8 @@
     ../../modules/localisation.nix
     ../../modules/nix_features.nix
     ../../modules/nix_store.nix
+    ../../modules/sops.nix
+    ../../modules/ssl_wildcard.nix
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
