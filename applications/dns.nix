@@ -22,7 +22,7 @@ in {
   services.bind = {
     enable = true;
 
-    forwarders = ["192.168.1.1"];
+    forwarders = ["192.168.0.1"];
 
     cacheNetworks = [
       "127.0.0.0/24"
@@ -68,27 +68,27 @@ in {
       $ORIGIN ${homedn}.
       $TTL 3600               ; 1 hour        
 
-      wayfinder		A	192.168.1.1      
+      wayfinder		A	192.168.0.1      
 
-      centurion		A	192.168.1.253
-      auxilium		A	192.168.1.252
-      facultas          A       192.168.1.251
+      centurion		A	192.168.90.253
+      auxilium		A	192.168.90.252
+      facultas          A       192.168.90.251
 
-      sentinel          A       192.168.1.2
-      epistula          A       192.168.1.2
+      sentinel          A       192.168.10.2
+      epistula          A       192.168.10.2
 
 
-      horreum           A       192.168.1.4
-      automaton         A       192.168.1.5
-      theatre           A       192.168.1.11
+      horreum           A       192.168.10.4
+      automaton         A       192.168.10.5
+      theatre           A       192.168.10.11
 
-      vanguard          A       192.168.1.3
-      occultus          A       192.168.1.3
-      auctoritas        A       192.168.1.3
+      vanguard          A       192.168.10.3
+      occultus          A       192.168.10.3
+      auctoritas        A       192.168.10.3
 
-      noxium            A       192.168.1.99
+      noxium            A       192.168.40.99
       
-      labratorium       A       192.168.1.254
+      labratorium       A       192.168.30.254
       
     '';
   };
