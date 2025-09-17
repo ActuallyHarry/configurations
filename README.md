@@ -92,10 +92,6 @@ Contains application configuration
 #### DNS
 - In order for DNS to start make sure that /etc/rndc.key is made - it as trouble sometimes
 
-#### Cloudflared
-- `<tunnel token> | base64 -d >> /var/lib/cloudflare.json`
-- Edit each key as AccountTag TunnelID and TunnelSecret 
-
 ### Machines
 Contains configuration.nix which only pulls in components form applications and modules, as well as any required specific configurations, includes a hardlink to hardware.nix which should be gitignored.
 ### Lib
