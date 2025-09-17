@@ -31,13 +31,13 @@
   networking.interfaces = {
     ens18 = {
       ipv4.addresses = [ {
-        address = "192.168.1.3";
-        prefixLength = 24;
+        address = "192.168.10.3";
+        prefixLength = 16;
       } ];
     };
   };
-  networking.defaultGateway = "192.168.1.1";
-  networking.nameservers = [ "192.168.1.2 192.168.1.1"];
+  networking.defaultGateway = "192.168.0.1";
+  networking.nameservers = [ "192.168.10.2 192.168.0.1"];
   networking.networkmanager.enable = true;
 
 
