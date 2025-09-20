@@ -51,6 +51,9 @@
 
   services.nginx.enable = true;
   services.nginx.virtualHosts."auctoritas.home.actuallyharry.net" = {
+    
+    serverName="auctoritas";
+    serverAliases=["auctoritas.home.actuallyharry.net" "auctoritas.actuallyharry.net"];
     enableACME = false; # I am managing it not nginx
     forceSSL = true;
 

@@ -18,7 +18,7 @@
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
-   # ../../applications/vaultwarden.nix
+    ../../applications/vaultwarden.nix
     ../../applications/authentik/authentik.nix
   ];
 
