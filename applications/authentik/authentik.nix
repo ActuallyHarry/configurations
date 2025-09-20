@@ -41,7 +41,7 @@
       set -a
       source ${config.sops.secrets."authentik.env".path}
       set +a
-      cp /etc/nixos/configurations/applications/authentik/docker-compose.yml docker-compose.yml
+      cp -r /etc/nixos/configurations/applications/authentik/* ./
       docker compose -f docker-compose.yml up  --remove-orphans
    '';
    
