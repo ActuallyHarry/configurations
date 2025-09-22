@@ -82,10 +82,10 @@
 #            return 403; # Forbidden
 #          }
 #        '';
-           
-        proxyPass="http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}/admin/";
-        proxyWebsockets = true;    
-    };
+#           
+#        proxyPass="http://127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT}/admin/";
+#        proxyWebsockets = true;    
+#    };
   };
   
   # Allow nginx to read certificate
