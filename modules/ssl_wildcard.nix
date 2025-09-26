@@ -20,7 +20,6 @@
       dnsProvider = "cloudflare";
       dnsPropagationCheck  = true;
       environmentFile = "${config.sops.secrets."acme.env".path}";
-      
     }; 
   };
 

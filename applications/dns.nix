@@ -68,15 +68,14 @@ in {
       $ORIGIN ${homedn}.
       $TTL 3600               ; 1 hour        
 
-      wayfinder		A	192.168.0.1      
+      wayfinder		      A	      192.168.0.1      
 
-      centurion		A	192.168.90.253
-      auxilium		A	192.168.90.252
+      centurion		      A	      192.168.90.253
+      auxilium		      A	      192.168.90.252
       facultas          A       192.168.90.251
 
       sentinel          A       192.168.10.2
       epistula          A       192.168.10.2
-
 
       horreum           A       192.168.10.4
       automaton         A       192.168.10.5
