@@ -89,12 +89,8 @@ Requires an age key best to copy it from other machine but if need to genetate
 ### Applications
 Contains application configuration
 
-#### DNS
+#### dns
 - In order for DNS to start make sure that /etc/rndc.key is made - it as trouble sometimes
-
-#### Cloudflared
-- `<tunnel token> | base64 -d >> /var/lib/cloudflare.json`
-- Edit each key as AccountTag TunnelID and TunnelSecret 
 
 ### Machines
 Contains configuration.nix which only pulls in components form applications and modules, as well as any required specific configurations, includes a hardlink to hardware.nix which should be gitignored.
