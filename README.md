@@ -89,7 +89,7 @@ Requires an age key best to copy it from other machine but if need to genetate
 ### Applications
 Contains application configuration
 
-#### dns
+#### DNS
 - In order for DNS to start make sure that /etc/rndc.key is made - it as trouble sometimes
 
 ### Machines
