@@ -27,6 +27,15 @@
       
       nixosConfigurations = {
 
+	# Hypervisor Hosts
+        centurion = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+
+          modules = [
+            ./machines/centurion/configuration.nix
+          ];
+        };
+
         # Network Manager
         sentinel = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs; inherit system; };
