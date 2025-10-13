@@ -1,24 +1,31 @@
-{config, pkgs, lib, ...}:
-let
-  cfg = config.homeIncus;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.homeIncus;
+in {
   options.homeIncus = {
     hostname = lib.mkOption {
-       type = lib.types.str;
-       description = "Hostname of the Hypervisor";
+      type = lib.types.str;
+      description = "Hostname of the Hypervisor";
     };
     ipv4 = lib.mkOption {
       type = lib.types.str;
       description = "IP of the hypervisor";
     };
     machineId = lib.mkOption {
-       type = lib.types.str;
-       description = "8 chars from /etc/machine-id";
+      type = lib.types.str;
+      description = "8 chars from /etc/machine-id";
     };
   };
 
-
+  config.boot.kernelModules = ["kvm-amd" "kvm-intel"]; # Include both for compatibility
+  config.boot.supportedFilesystems = ["zfs"];
+  config.networking.hostId = cfg.machineId;
+  # This option is necessary to ensure the thin-provisioning-tools
+  # binaries (like thin_check, which LVM uses) are correctly patched
 
   # This option ensures that dm-snapshot and dm-thin-pool are included
   # in the initrd, which is necessary for LVM thin provisioning to work
@@ -28,9 +35,6 @@ in
     "dm-thin-pool"
   ];
 
-  config.boot.kernelModules = [ "kvm-amd" "kvm-intel" ]; # Include both for compatibility
-  config.boot.supportedFilesystems = [ "zfs" ];
-  config.networking.hostId = cfg.machineId;
   # This option is necessary to ensure the thin-provisioning-tools
   # binaries (like thin_check, which LVM uses) are correctly patched
   # and accessible for LVM operations.
@@ -39,7 +43,6 @@ in
   config.virtualisation.incus.enable = true;
   config.virtualisation.incus.ui.enable = true;
   config.virtualisation.libvirtd.enable = true;
-
 
   config.networking.nftables.enable = true;
 
@@ -54,17 +57,17 @@ in
   ];
 
   config.virtualisation.incus.package = pkgs.incus.overrideAttrs (
-    old : {
+    old: {
       propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [pkgs.zfs pkgs.openvswitch pkgs.lvm2 pkgs.thin-provisioning-tools];
-   });
+    }
+  );
 
-  config.networking.firewall.allowedTCPPorts = [ 443 8443 7443 53 67 ];
+  config.networking.firewall.allowedTCPPorts = [443 8443 7443 53 67];
 
   config.services.nginx.enable = true;
-  config.services.nginx.virtualHosts."${cfg.hostname}.home.actuallyharry.net" = {
-
-    serverName=cfg.hostname;
-    serverAliases=["${cfg.hostname}.home.actuallyharry.net"];
+  config.services.nginx.virtualHosts."${cfg.hostname}.zitohouse.net" = {
+    serverName = cfg.hostname;
+    serverAliases = ["${cfg.hostname}.zitohouse.net"];
     enableACME = false; # I am managing it not nginx
     forceSSL = true;
 
@@ -72,7 +75,7 @@ in
     sslCertificateKey = "/var/lib/acme/home-wildcard/key.pem";
 
     extraConfig = ''
-       add_header Strict-Tansport-Security "max-age=6307200" always;
+      add_header Strict-Tansport-Security "max-age=6307200" always;
     '';
 
     locations."/" = {
@@ -85,9 +88,7 @@ in
         proxy_set_header Host $host;
       '';
     };
-
   };
 
-  config.users.users.nginx.extraGroups = [ "acme" ];
-
+  config.users.users.nginx.extraGroups = ["acme"];
 }
