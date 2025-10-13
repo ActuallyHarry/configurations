@@ -13,19 +13,27 @@
     ../../modules/nix_features.nix
     ../../modules/nix_store.nix
     ../../modules/sops.nix
+    ../../modules/ssl_wildcard.nix
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
+    ../../applications/incus.nix
   ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  #Incus Settings
+  homeIncus = {
+     hostname = "centurion";
+     ipv4 = "192.168.90.253";
+  };
+
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "centurion";
   networking.useDHCP = false;
   networking.interfaces = {
-    ens18 = {
+    enp0s31f6 = {
       ipv4.addresses = [ {
         address = "192.168.90.253";
         prefixLength = 16;
