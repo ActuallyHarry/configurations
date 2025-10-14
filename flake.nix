@@ -36,6 +36,14 @@
           ];
         };
 
+        facultus = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+          
+          modules = [
+            ./machines/facultus/configuration.nix
+          ];
+        };
+
         # Network Manager
         sentinel = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs; inherit system; };
