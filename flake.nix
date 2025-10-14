@@ -36,6 +36,14 @@
           ];
         };
 
+        auxilium = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+
+          modules = [
+           ./machines/auxilium/configuration.nix
+          ];
+        };
+
         # Network Manager
         sentinel = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs; inherit system; };
