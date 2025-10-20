@@ -12,8 +12,14 @@ in
       type = lib.types.str;
       description = "IP of the hypervisor";
     };
+    machineId = lib.mkOption {
+       type = lib.types.str;
+       description = "8 chars from /etc/machine-id";
+    };
   };
 
+
+  
   # This option ensures that dm-snapshot and dm-thin-pool are included 
   # in the initrd, which is necessary for LVM thin provisioning to work 
   # when LVM is managed early in the boot process.
@@ -22,6 +28,9 @@ in
     "dm-thin-pool" 
   ];
 
+  config.boot.kernelModules = [ "kvm-amd" "kvm-intel" ]; # Include both for compatibility
+  config.boot.supportedFilesystems = [ "zfs" ];
+  config.networking.hostId = cfg.machineId;
   # This option is necessary to ensure the thin-provisioning-tools 
   # binaries (like thin_check, which LVM uses) are correctly patched 
   # and accessible for LVM operations.
@@ -29,13 +38,7 @@ in
 
   config.virtualisation.incus.enable = true;
   config.virtualisation.incus.ui.enable = true;
-  config.virtualisation.incus.preseed = {
-     config = {
-       "core.https_address" = "0.0.0.0:7443";
-       "cluster.https_address" = cfg.ipv4;
-    };
-  };
-
+  config.virtualisation.libvirtd.enable = true;
 
 
   config.networking.nftables.enable = true;
@@ -45,8 +48,16 @@ in
   config.environment.systemPackages = with pkgs; [
     lvm2
     thin-provisioning-tools
+    openvswitch
+    zfs
+    btrfs-progs
   ];
 
+  config.virtualisation.incus.package = pkgs.incus.overrideAttrs (
+    old : {
+      propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [pkgs.zfs pkgs.openvswitch pkgs.lvm2 pkgs.thin-provisioning-tools]; 
+   });
+  
   config.networking.firewall.allowedTCPPorts = [ 443 8443 7443 53 67 ];
 
   config.services.nginx.enable = true;

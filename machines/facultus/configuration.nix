@@ -24,6 +24,7 @@
   homeIncus = {
      hostname = "facultus";
      ipv4 = "192.168.90.251";
+     machineId = "0a727703";
   };
 
 
@@ -33,14 +34,23 @@
   networking.hostName = "facultus";
   networking.useDHCP = false;
   networking.interfaces = {
-    enp6s0 = {
+    enp7s0 = {
+       useDHCP = false;
+    };
+    br0 = {
       ipv4.addresses = [ {
         address = "192.168.90.251";
         prefixLength = 16;
       } ];
     };
   };
-  networking.defaultGateway = "192.168.0.1";
+
+  networking.bridges.br0.interfaces = ["enp7s0"];
+
+  networking.defaultGateway = {
+    address= "192.168.0.1";
+    interface= "br0";
+  };
   networking.nameservers = [ "192.168.10.2 192.168.0.1"];
   networking.networkmanager.enable = true;
 
