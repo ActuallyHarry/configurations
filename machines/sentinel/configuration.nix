@@ -1,9 +1,11 @@
 ############################################################
 # Sentinel Machine
 ############################################################
-{ config, pkgs, ... }:
+{ modulesPath, config, pkgs, lib, ... }:
 {
   imports = [
+    # Include the default incus configuration.
+    "${modulesPath}/virtualisation/lxc-container.nix"
     # Hardware
     ./hardware-configuration.nix
     # Modules
@@ -22,14 +24,12 @@
     ../../applications/postfix.nix
   ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   networking.hostName = "sentinel";
   networking.useDHCP = false;
   networking.interfaces = { 
-    ens18 = {
+    eth0 = {
       ipv4.addresses = [ { 
         address = "192.168.10.2";
         prefixLength = 16;

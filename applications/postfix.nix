@@ -9,14 +9,13 @@
 
   services.postfix = {
     enable = true;
-    
-    relayHost = "smtp.gmail.com";
-    relayPort = 587;
 
+    settings.main = {
+       relayHost = ["smtp.gmail.com:587"];    
+       mynetworks = ["127.0.0.0/8" "192.168.1.0/24" "192.168.10.0/24" "192.168.20.0/24" "192.168.90/24"];
+   
+    };
     config = {
-
-     mynetworks = "127.0.0.0/8 192.168.1.0/24 192.168.10.0/24 192.168.20.0/24 192.168.90/24";
-
      inet_interfaces = "all";
      inet_protocols = "ipv4";
      
