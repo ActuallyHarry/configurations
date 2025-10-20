@@ -382,11 +382,19 @@
         ]
       },
       "locked": {
+<<<<<<< HEAD
         "lastModified": 1775619836,
         "narHash": "sha256-VcC/+MMMldwQKcST2y/QTndGLusSxjeUvYwFwzZKKko=",
         "owner": "Mic92",
         "repo": "sops-nix",
         "rev": "de5f2d596eb896a5728afcd15f823f59cb9ecfdb",
+=======
+        "lastModified": 1760845571,
+        "narHash": "sha256-PwGzU3EOU65Ef1VvuNnVLie+l+P0g/fzf/PGUG82KbM=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "9c9a9798be331ed3f4b2902933d7677d0659ee61",
+>>>>>>> 02a0eee (centurion-incus)
         "type": "github"
       },
       "original": {
