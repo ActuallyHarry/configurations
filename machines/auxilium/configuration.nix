@@ -24,6 +24,7 @@
   homeIncus = {
      hostname = "auxilium";
      ipv4 = "192.168.90.252";
+     machineId = "44306091";
   };
 
 
@@ -34,13 +35,22 @@
   networking.useDHCP = false;
   networking.interfaces = {
     enp0s31f6 = {
+       useDHCP = false;
+    };
+    br0 = {
       ipv4.addresses = [ {
         address = "192.168.90.252";
         prefixLength = 16;
       } ];
     };
   };
-  networking.defaultGateway = "192.168.0.1";
+
+  networking.bridges.br0.interfaces = ["enp0s31f6"];
+
+  networking.defaultGateway = {
+    address= "192.168.0.1";
+    interface= "br0";
+  };
   networking.nameservers = [ "192.168.10.2 192.168.0.1"];
   networking.networkmanager.enable = true;
 
