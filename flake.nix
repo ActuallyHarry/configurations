@@ -40,6 +40,14 @@
             ./machines/vanguard/configuration.nix
           ];
         };
+
+        noxium  = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+
+          modules = [
+            ./machines/noxium/configuration.nix
+          ];
+        };
       };
     };
 }

@@ -15,7 +15,7 @@
     
     certs."home-wildcard" = {
 
-      domain = "*.home.actuallyharry.net";
+      domain = "*.home.actuallyadequate.net";
       dnsResolver = "1.1.1.1:53";
       dnsProvider = "cloudflare";
       dnsPropagationCheck  = true;
