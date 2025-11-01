@@ -10,6 +10,10 @@
   services.postfix = {
     enable = true;
 
+    transport = ''
+      * smtp:[smtp.gmail.com]:587
+    '';
+
     settings.main = {
        relayHost = ["smtp.gmail.com:587"];    
        mynetworks = ["127.0.0.0/8" "192.168.1.0/24" "192.168.10.0/24" "192.168.20.0/24" "192.168.90/24"];
@@ -25,6 +29,7 @@
 
       # Incoming Mail
       smtpd_use_tls = "yes";
+      smtpd_tls_security_level = "encrypt";
       smtpd_tls_cert_file = "/var/lib/acme/home-wildcard/cert.pem";
       smtpd_tls_key_file = "/var/lib/acme/home-wildcard/key.pem"; 
 
