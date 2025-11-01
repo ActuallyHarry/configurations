@@ -21,14 +21,14 @@
      environmentFile = "/var/lib/vaultwarden.env";
 
      config = {
-        DOMAIN = "https://occultus.home.actuallyharry.net";
+        DOMAIN = "https://occultus.home.actuallyadequate.net";
         SIGNUPS_ALLOWED = false;
  
         ROCKET_ADDRESS = "127.0.0.1";
         ROCKET_PORT = 8222;
 
         SSO_ENABLED = true;
-        SSO_AUTHORITY = "https://auctoritas.actuallyharry.net/application/o/vaultwarden/";
+        SSO_AUTHORITY = "https://auctoritas.actuallyadequate.net/application/o/vaultwarden/";
         SSO_SCOPES = "openid email profile offline_access";
         SSO_ALLOW_UNKNOWN_EMAIL_VERIFICATION = false;
         SSO_CLIENT_CACHE_EXPIRATION = 0;
@@ -38,10 +38,10 @@
   };
 
   services.nginx.enable = true;
-  services.nginx.virtualHosts."occultus.home.actuallyharry.net" = {
+  services.nginx.virtualHosts."occultus.home.actuallyadequate.net" = {
 
     serverName="occultus";
-    serverAliases=["occultus.home.actuallyharry.net" "occultus.actuallyharry.net"];
+    serverAliases=["occultus.home.actuallyadequate.net" "occultus.actuallyadequate.net"];
 
     enableACME = false; # I am managing it not nginx  
     forceSSL = true;
