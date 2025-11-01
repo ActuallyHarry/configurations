@@ -8,6 +8,8 @@
        url = "github:Mic92/sops-nix";
        inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    copyparty.url = "github:9001/copyparty";
   };
 
   outputs = { self, nixpkgs, sops-nix, ... }@ inputs: 
@@ -40,6 +42,15 @@
             ./machines/vanguard/configuration.nix
           ];
         };
+        
+        horreum  = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+
+          modules = [
+            ./machines/horreum/configuration.nix
+          ];
+        };
+ 
       };
     };
 }
