@@ -285,11 +285,19 @@
     },
     "nixpkgs": {
       "locked": {
+<<<<<<< HEAD
         "lastModified": 1775423009,
         "narHash": "sha256-vPKLpjhIVWdDrfiUM8atW6YkIggCEKdSAlJPzzhkQlw=",
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "68d8aa3d661f0e6bd5862291b5bb263b2a6595c9",
+=======
+        "lastModified": 1761672384,
+        "narHash": "sha256-o9KF3DJL7g7iYMZq9SWgfS1BFlNbsm6xplRjVlOCkXI=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "08dacfca559e1d7da38f3cf05f1f45ee9bfd213c",
+>>>>>>> 13f6f85 (flake update)
         "type": "github"
       },
       "original": {
@@ -383,6 +391,7 @@
       },
       "locked": {
 <<<<<<< HEAD
+<<<<<<< HEAD
         "lastModified": 1775619836,
         "narHash": "sha256-VcC/+MMMldwQKcST2y/QTndGLusSxjeUvYwFwzZKKko=",
         "owner": "Mic92",
@@ -395,6 +404,13 @@
         "repo": "sops-nix",
         "rev": "9c9a9798be331ed3f4b2902933d7677d0659ee61",
 >>>>>>> 02a0eee (centurion-incus)
+=======
+        "lastModified": 1760998189,
+        "narHash": "sha256-ee2e1/AeGL5X8oy/HXsZQvZnae6XfEVdstGopKucYLY=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "5a7d18b5c55642df5c432aadb757140edfeb70b3",
+>>>>>>> 13f6f85 (flake update)
         "type": "github"
       },
       "original": {
