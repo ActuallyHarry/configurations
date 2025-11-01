@@ -40,6 +40,14 @@
             ./machines/vanguard/configuration.nix
           ];
         };
+
+        spectaculum  = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+
+          modules = [
+            ./machines/spectaculum/configuration.nix
+          ];
+        };
       };
     };
 }
