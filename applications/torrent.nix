@@ -6,12 +6,40 @@
   services.qbittorrent = {
     enable = true;
     serverConfig = {
-      WebUI = {
-        AuthSubnetWhitelist = "192.168.0.0./16";
-        AuthSubnetWhitelistEnabled = true;
+      LegalNotice.Accepted = true;
+      Preferences = {
+        WebUI = {
+          AuthSubnetWhitelist = "192.168.0.0/16";
+          AuthSubnetWhitelistEnabled = true;
+          ReverseProxySupportEnabled = true;
+          TrustedReverseProxiesList = "127.0.0.1";
+        };
       };
-
-    };
+      BitTorrent = {
+        Session.DefaultSavePath = "/mnt/media/downloads/";
+        Session.Preallocation = true;
+        Session.DisableAutoTMMByDefault = false;
+        Session.DisableAutoTMMTriggers = {
+          CategorySavePathChanged = false;
+          DefaultSavePathChanged = false;
+          CategoryChanged = false;
+        };
+        Session.Port = 5000;
+        Session.BTProtocol = "TCP";
+        Session.TempPath = "/var/lib/qBittorrent/qBittorrent/cache";
+        Session.TempPathEnabled = true;       
+        MergeTrackersEnabled = true;      
+      };
+      Core = {
+        AutoDeleteAddedTorrentFile = "IfAdded";
+      };
+      Network = {
+        PortForwadingEnabled = false;
+        Proxy = {
+          HostnameLookupEnabled = false;
+        };
+      };
+     };
   };
 
   services.nginx.enable = true;

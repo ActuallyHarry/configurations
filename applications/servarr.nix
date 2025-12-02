@@ -2,12 +2,16 @@
 {
 
   networking.firewall.allowedTCPPorts = [443];
+  users.groups.media = {};
+
   services.sonarr = {
     enable = true;
+    group="media";
   };
   
   services.radarr = {
     enable = true;
+    group = "media";
   };
 
   services.prowlarr = {
@@ -31,9 +35,9 @@
       "nofail"
       "allow_other"
       "args2env"
+      "vfs-cache-mode=off"
+      "dir-cache-time=5s"
       "config=/var/lib/rclone.ini"
-      "vfs-cache-mode=writes" # from rclone mount command
-      "dir-cache-time=5s"     # from rclone mount command
     ];
   }; 
   
