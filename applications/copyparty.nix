@@ -6,7 +6,7 @@
  
    nixpkgs.overlays = [ inputs.copyparty.overlays.default ];
 
-   networking.firewall.allowedTCPPorts = [ 443 ];
+   networking.firewall.allowedTCPPorts = [ 443 445 ];
 
    sops.secrets."copyparty/jellyfin" = {
      sopsFile = ../secrets/copyparty.yaml;
@@ -25,8 +25,10 @@
 
       settings = {
         i = "127.0.0.1";
-        p = ["3923"];
+        p = ["3923" "3945"];
         rproxy = 1;
+        e2dsa = true;
+        dedup = true;
       };
 
       accounts = {
@@ -39,13 +41,28 @@
         "/media" = {
            path="/data/media";
            access= {
-              r = ["jellyfin"];
-              rw = ["noxium"];
+              rwmd = ["noxium" "jellyfin" ];
+           };
+           flags= {
+             hardlinksonly=true;
            };
         };
       };
       
    };
+
+  # Ensure nftables is enabled (it often is by default)
+  networking.nftables.enable = true;
+
+  networking.nftables.ruleset = ''
+    table ip nat {
+      chain prerouting {
+        type nat hook prerouting priority dstnat; policy accept;
+        # The rule: iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 445 -j REDIRECT --to-port 3945
+        iifname "eth0" tcp dport 445 redirect to 3945 comment "Redirect 445/tcp on eth0 to 3945"
+      }
+    }
+  '';
 
   services.nginx.enable = true;
   services.nginx.virtualHosts."horreum.home.actuallyadequate.net" = {
@@ -72,6 +89,7 @@
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
+        client_max_body_size 0;
       '';
     };
 
