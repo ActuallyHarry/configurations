@@ -1,12 +1,19 @@
 {config, pkgs, inputs, ...}:
+let
+  copypartyPkg = pkgs.copyparty.overridePythonAttrs (oldAttrs: {
+    propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [
+      # List your missing dependencies here:
+      pkgs.python313Packages.impacket 
+    ];
+  });  
+in
 {
    imports = [
     inputs.copyparty.nixosModules.default
    ];
  
-   nixpkgs.overlays = [ inputs.copyparty.overlays.default ];
 
-   networking.firewall.allowedTCPPorts = [ 443 445 ];
+   networking.firewall.allowedTCPPorts = [ 443 445];
 
    sops.secrets."copyparty/jellyfin" = {
      sopsFile = ../secrets/copyparty.yaml;
@@ -18,18 +25,24 @@
      owner = config.services.copyparty.user; 
    };
 
+
+
    services.copyparty = {
       enable = true;
       user = "copyparty";
       group = "copyparty";
 
+      package = copypartyPkg;  
+
       settings = {
         i = "127.0.0.1";
-        p = ["3923" "3945"];
+        p = ["3923" ];
         rproxy = 1;
         e2dsa = true;
         dedup = true;
-      };
+        smbw = true;
+        smb-port = 3945; 
+     };
 
       accounts = {
          jellyfin.passwordFile = config.sops.secrets."copyparty/jellyfin".path;
@@ -50,19 +63,6 @@
       };
       
    };
-
-  # Ensure nftables is enabled (it often is by default)
-  networking.nftables.enable = true;
-
-  networking.nftables.ruleset = ''
-    table ip nat {
-      chain prerouting {
-        type nat hook prerouting priority dstnat; policy accept;
-        # The rule: iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 445 -j REDIRECT --to-port 3945
-        iifname "eth0" tcp dport 445 redirect to 3945 comment "Redirect 445/tcp on eth0 to 3945"
-      }
-    }
-  '';
 
   services.nginx.enable = true;
   services.nginx.virtualHosts."horreum.home.actuallyadequate.net" = {
@@ -94,6 +94,20 @@
     };
 
   };
+
+  services.nginx.streamConfig = ''
+    upstream copyparty_smb {
+        server 127.0.0.1:3945;
+    }
+    
+    server {
+        # Listen on the standard SMB port (445)
+        listen 445; 
+        
+        # Forward the raw TCP stream to the upstream block
+        proxy_pass copyparty_smb;
+    }
+  '';
 
   users.users.nginx.extraGroups = [ "acme" ];
 

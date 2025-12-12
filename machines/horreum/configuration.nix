@@ -17,6 +17,8 @@
     ../../applications/git.nix
     ../../applications/ssh.nix
     ../../applications/copyparty.nix
+    ../../applications/vim.nix
+    ../../applications/syncthing.nix
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
