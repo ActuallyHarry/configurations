@@ -1,19 +1,18 @@
-{config, pkgs, nix-colors, ...}:
-let
-  nix-colors-lib = nix-colors.lib.contrib {inherit pkgs;};
-in
+{config, pkgs, stylix, ...}:
 {
-  imports = [ nix-colors.homeManagerModules.default ];
-  colorScheme = nix-colors-lib.colorSchemeFromPicture {
-    path = ../resources/background.jpg;
-    variant = "dark";
+  imports = [ 
+    stylix.homeModules.stylix
+  ];
+    
+  stylix.enable = true;
+  stylix.image = ../resources/backgrounds/background1;
+  stylix.polarity = "dark";
+  stylix.fonts = {
+    serif = config.stylix.fonts.monospace;
+    sansSerif = config.stylix.fonts.monospace;
+    emoji = config.stylix.fonts.monospace;
   };
+ stylix.autoEnable = false;
+ stylix.targets.gtk.enable = true;
 
-  gtk = {
-    enable = true;
-    theme = {
-      name =  "everforest";
-      package = pkgs.gnome-themes-extra;
-    };
-  };
 }

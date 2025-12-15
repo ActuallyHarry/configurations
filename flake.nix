@@ -15,7 +15,10 @@
     };
     
     nix-colors.url = "github:misterio77/nix-colors";
-
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
@@ -23,12 +26,16 @@
         # to have it up-to-date or simply don't specify the nixpkgs input
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
+      };
     };
-  };
+    nvf = {
+      url = "github:NotAShelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 
-  outputs = { self, nixpkgs, sops-nix, home-manager, nix-colors, zen-browser, ... }@ inputs: 
+  outputs = { self, nixpkgs, sops-nix, home-manager, nix-colors, zen-browser, stylix, nvf, ... }@ inputs: 
     let
       system =  "x86_64-linux";
       pkgs = import nixpkgs {
@@ -74,7 +81,7 @@
      homeConfigurations = {
        "harry" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages."x86_64-linux";
-          extraSpecialArgs = { inherit nix-colors; inherit zen-browser;};
+          extraSpecialArgs = { inherit nix-colors; inherit zen-browser; inherit stylix; inherit nvf;};
           modules = [
             ./users/harry/home.nix
           ];

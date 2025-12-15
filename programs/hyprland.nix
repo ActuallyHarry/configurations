@@ -1,34 +1,31 @@
-{ config, pkgs, nix-colors, ... }:
-let
-  palette = config.colorScheme.palette;
-
-  hexToRgba = 
-    hex: alpha:
-    let
-    in
-     "rgba(${hex}${alpha})";
-
-  convert = nix-colors.lib.conversions.hexToRGBString;
-in
 {
+  config,
+  pkgs,
+  stylix,
+  ...
+}: {
+  # home.file = {
+  #   "Pictures/Wallpapers/background" = {
+  #     source = ../resources/background;
+  #     recursive = true;
+  #   };
+  # };
 
-  home.file = {
-    "Pictures/Wallpapers/background" = {
-      source = ../resources/background.jpg;
-      recursive = true;
-    };
-  };
+  stylix.targets.hyprpaper.enable = true;
+
   services.hyprpaper = {
     enable = true;
-    settings = {
-      preload = [
-        "${config.home.homeDirectory}/Pictures/Wallpapers/background"
-      ];
-      wallpaper = [
-        ",${config.home.homeDirectory}/Pictures/Wallpapers/background"
-      ];
-    };
+    #settings = {
+    #  preload = [
+    #    "${config.home.homeDirectory}/Pictures/Wallpapers/background"
+    #  ];
+    #  wallpaper = [
+    #    ",${config.home.homeDirectory}/Pictures/Wallpapers/background"
+    #  ];
+    #};
   };
+
+  stylix.targets.hyprlock.enable = true;
 
   programs.hyprlock = {
     enable = true;
@@ -42,9 +39,8 @@ in
       };
       background = {
         monitor = "";
-       # path = selected_wallpaper_path;
-        # blur_passes = 3;
-        # brightness = 0.5;
+        blur_passes = 3;
+        brightness = 0.5;
       };
 
       input-field = {
@@ -54,17 +50,11 @@ in
         halign = "center";
         valign = "center";
 
-        inner_color = "rgb(${convert ", " palette.base02})";
-        outer_color = "rgb(${convert ", " palette.base05})";
         outline_thickness = 4;
 
-        font_family = "CaskaydiaMono Nerd Font";
         font_size = 32;
-        font_color = "rgb(${convert ", " palette.base05})";
 
-        placeholder_color = "rgb(${convert ", " palette.base04})";
         placeholder_text = "  Enter Password 󰈷 ";
-        check_color = "rgba(131, 192, 146, 1.0)";
         fail_text = "Wrong";
 
         rounding = 0;
@@ -76,9 +66,7 @@ in
         monitor = "";
         text = "\$FPRINTPROMPT";
         text_align = "center";
-        color = "rgb(211, 198, 170)";
         font_size = 24;
-        font_family = "CaskaydiaMono Nerd Font";
         position = "0, -100";
         halign = "center";
         valign = "center";
@@ -109,19 +97,23 @@ in
   };
 
   services.hyprpolkitagent.enable = true;
- 
+
+  stylix.targets.hyprland.enable = true;
+
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
       # Variables
       "$terminal" = "ghostty";
-      "$fileManager" = "nautilus --new-window";
+      "$secondterminal" = "alacritty";
+      "$fileManager" = "ghostty -e yazi";
       "$browser" = "zen";
       "$notes" = "obsidian -disable-gpu";
 
       # Monitors
-      monitor = [ # THis would be good to calcualte somehow
-        "eDP-1, 1920x1080@60, auto, auto"
+      monitor = [
+        # THis would be good to calcualte somehow
+        "eDP-1, 1920x1080@60, auto, 1"
       ];
 
       # Autostart
@@ -132,13 +124,14 @@ in
         "wl-clip-persist --clipboard regular & clipse -listen"
       ];
       exec = [
-         "pkill -SIGUSR2 waybar || waybar"
+        "pkill -SIGUSR2 waybar || waybar"
       ];
 
       # Bindings
       bind = [
         "SUPER, F1, exec, ~/.local/share/show-keybindings"
         "SUPER, RETURN, exec, $terminal"
+        "SUPER SHIFT, RETURN, exec, $secondterminal"
         "SUPER, F, exec, $fileManager"
         "SUPER, N, exec, $terminal -e nvim"
         "SUPER, B, exec, $browser"
@@ -189,7 +182,7 @@ in
         "SUPER SHIFT, 9, movetoworkspace, 9"
         "SUPER SHIFT, 0, movetoworkspace, 10"
 
-         # Super workspace floating layer
+        # Super workspace floating layer
         "SUPER, S, togglespecialworkspace, magic"
         "SUPER SHIFT, S, movetoworkspace, special:magic"
 
@@ -209,7 +202,7 @@ in
         # Scroll through existing workspaces with mainMod + scroll
         "SUPER, mouse_down, workspace, e+1"
         "SUPER, mouse_up, workspace, e-1"
-     
+
         # Screenshots
         ", PRINT, exec, hyprshot -m region"
         "SHIFT, PRINT, exec, hyprshot -m window"
@@ -221,66 +214,64 @@ in
         # Clipse
         "CTRL SUPER, V, exec, ghostty --class clipse -e clipse"
       ];
-      
+
       bindm = [
-      # Move/resize windows with mainMod + LMB/RMB and dragging
-      "SUPER, mouse:272, movewindow"
-      "SUPER, mouse:273, resizewindow"
-    ];
-
-    bindel = [
-      # Laptop multimedia keys for volume and LCD brightness
-      ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-      ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-      ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-      ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-      ",XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+"
-      ",XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
-    ];
-
-    bindl = [
-      # Requires playerctl
-      ", XF86AudioNext, exec, playerctl next"
-      ", XF86AudioPause, exec, playerctl play-pause"
-      ", XF86AudioPlay, exec, playerctl play-pause"
-      ", XF86AudioPrev, exec, playerctl previous"
-    ];
-
-    # Environment
-    env = [
-     "GDK_SCALE,1"     
-     # Cursor size
-      "XCURSOR_SIZE,24"
-      "HYPRCURSOR_SIZE,24"
-
-      # Cursor theme
-      "XCURSOR_THEME,Adwaita"
-      "HYPRCURSOR_THEME,Adwaita"
-
-      # Force all apps to use Wayland
-      "GDK_BACKEND,wayland"
-      "QT_QPA_PLATFORM,wayland"
-      "QT_STYLE_OVERRIDE,kvantum"
-      "SDL_VIDEODRIVER,wayland"
-      "MOZ_ENABLE_WAYLAND,1"
-      "ELECTRON_OZONE_PLATFORM_HINT,wayland"
-      "OZONE_PLATFORM,wayland"
-
-      # Make Chromium use XCompose and all Wayland
-      "CHROMIUM_FLAGS,\"--enable-features=UseOzonePlatform --ozone-platform=wayland --gtk-version=4\""
-
-      # Make .desktop files available for wofi
-      "XDG_DATA_DIRS,$XDG_DATA_DIRS:$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share"
-
-      # Use XCompose file
-      "XCOMPOSEFILE,~/.XCompose"
-      "EDITOR,nvim"
-
-      # GTK theme
-      # "GTK_THEME,${if cfg.theme == "generated_light" then "Adwaita" else "Adwaita:dark"}"
-
+        # Move/resize windows with mainMod + LMB/RMB and dragging
+        "SUPER, mouse:272, movewindow"
+        "SUPER, mouse:273, resizewindow"
       ];
 
+      bindel = [
+        # Laptop multimedia keys for volume and LCD brightness
+        ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+        ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        ",XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+"
+        ",XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
+      ];
+
+      bindl = [
+        # Requires playerctl
+        ", XF86AudioNext, exec, playerctl next"
+        ", XF86AudioPause, exec, playerctl play-pause"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPrev, exec, playerctl previous"
+      ];
+
+      # Environment
+      env = [
+        "GDK_SCALE,1"
+        # Cursor size
+        "XCURSOR_SIZE,24"
+        "HYPRCURSOR_SIZE,24"
+
+        # Cursor theme
+        "XCURSOR_THEME,Adwaita"
+        "HYPRCURSOR_THEME,Adwaita"
+
+        # Force all apps to use Wayland
+        "GDK_BACKEND,wayland"
+        "QT_QPA_PLATFORM,wayland"
+        "QT_STYLE_OVERRIDE,kvantum"
+        "SDL_VIDEODRIVER,wayland"
+        "MOZ_ENABLE_WAYLAND,1"
+        "ELECTRON_OZONE_PLATFORM_HINT,wayland"
+        "OZONE_PLATFORM,wayland"
+
+        # Make Chromium use XCompose and all Wayland
+        "CHROMIUM_FLAGS,\"--enable-features=UseOzonePlatform --ozone-platform=wayland --gtk-version=4\""
+
+        # Make .desktop files available for wofi
+        "XDG_DATA_DIRS,$XDG_DATA_DIRS:$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share"
+
+        # Use XCompose file
+        "XCOMPOSEFILE,~/.XCompose"
+        "EDITOR,nvim"
+
+        # GTK theme
+        # "GTK_THEME,${if cfg.theme == "generated_light" then "Adwaita" else "Adwaita:dark"}"
+      ];
 
       xwayland = {
         force_zero_scaling = true;
@@ -299,132 +290,122 @@ in
         touchpad.natural_scroll = false;
       };
 
-
       # Window Rules
       windowrule = [
-      # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
-      "suppressevent maximize, class:.*"
+        # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
+        "suppressevent maximize, class:.*"
 
-      # Force chromium into a tile to deal with --app bug
-      "tile, class:^(chromium)$"
+        # Force chromium into a tile to deal with --app bug
+        "tile, class:^(chromium)$"
 
-      # Settings management
-      "float, class:^(org.pulseaudio.pavucontrol|blueberry.py)$"
+        # Settings management
+        "float, class:^(org.pulseaudio.pavucontrol|blueberry.py)$"
 
-      # Float Steam, fullscreen RetroArch
-      "float, class:^(steam)$"
-      "fullscreen, class:^(com.libretro.RetroArch)$"
+        # Float Steam, fullscreen RetroArch
+        "float, class:^(steam)$"
+        "fullscreen, class:^(com.libretro.RetroArch)$"
 
-      # Just dash of transparency
-      "opacity 0.97 0.9, class:.*"
-      # Normal chrome Youtube tabs
-      "opacity 1 1, class:^(chromium|google-chrome|google-chrome-unstable)$, title:.*Youtube.*"
-      "opacity 1 0.97, class:^(chromium|google-chrome|google-chrome-unstable)$"
-      "opacity 0.97 0.9, initialClass:^(chrome-.*-Default)$ # web apps"
-      "opacity 1 1, initialClass:^(chrome-youtube.*-Default)$ # Youtube"
-      "opacity 1 1, class:^(zoom|vlc|org.kde.kdenlive|com.obsproject.Studio)$"
-      "opacity 1 1, class:^(com.libretro.RetroArch|steam)$"
+        # Just dash of transparency
+        "opacity 0.97 0.9, class:.*"
+        # Normal chrome Youtube tabs
+        "opacity 1 1, class:^(chromium|google-chrome|google-chrome-unstable)$, title:.*Youtube.*"
+        "opacity 1 0.97, class:^(chromium|google-chrome|google-chrome-unstable)$"
+        "opacity 0.97 0.9, initialClass:^(chrome-.*-Default)$ # web apps"
+        "opacity 1 1, initialClass:^(chrome-youtube.*-Default)$ # Youtube"
+        "opacity 1 1, class:^(zoom|vlc|org.kde.kdenlive|com.obsproject.Studio)$"
+        "opacity 1 1, class:^(com.libretro.RetroArch|steam)$"
 
-      # Fix some dragging issues with XWayland
-      "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+        # Fix some dragging issues with XWayland
+        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
 
-      # Float in the middle for clipse clipboard manager
-      "float, class:(clipse)"
-      "size 622 652, class:(clipse)"
-      "stayfocused, class:(clipse)"
-    ];
-
-    layerrule = [
-      # Proper background blur for wofi
-      "blur,wofi"
-      "blur,waybar"
-    ];
-
-    # LooknFeel
-    general = {
-      gaps_in = 5;
-      gaps_out = 10;
-
-      border_size = 2;
-     
-      "col.active_border" = (hexToRgba config.colorScheme.palette.base09 "aa");
-      "col.inactive_border" = (hexToRgba config.colorScheme.palette.base0D "aa"); 
-
-      resize_on_border = false;
-
-      allow_tearing = false;
-
-      layout = "dwindle";
-    };
-
-
-    decoration = {
-      rounding = 4;
-
-      shadow = {
-        enabled = false;
-        range = 30;
-        render_power = 3;
-        ignore_window = true;
-        color = "rgba(00000045)";
-      };
-
-      blur = {
-        enabled = true;
-        size = 5;
-        passes = 2;
-
-        vibrancy = 0.1696;
-      };
-    };
-
-    animations = {
-      enabled = true; # yes, please :)
-
-      bezier = [
-        "easeOutQuint,0.23,1,0.32,1"
-        "easeInOutCubic,0.65,0.05,0.36,1"
-        "linear,0,0,1,1"
-        "almostLinear,0.5,0.5,0.75,1.0"
-        "quick,0.15,0,0.1,1"
+        # Float in the middle for clipse clipboard manager
+        "float, class:(clipse)"
+        "size 622 652, class:(clipse)"
+        "stayfocused, class:(clipse)"
       ];
 
-      animation = [
-        "global, 1, 10, default"
-        "border, 1, 5.39, easeOutQuint"
-        "windows, 1, 4.79, easeOutQuint"
-        "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
-        "windowsOut, 1, 1.49, linear, popin 87%"
-        "fadeIn, 1, 1.73, almostLinear"
-        "fadeOut, 1, 1.46, almostLinear"
-        "fade, 1, 3.03, quick"
-        "layers, 1, 3.81, easeOutQuint"
-        "layersIn, 1, 4, easeOutQuint, fade"
-        "layersOut, 1, 1.5, linear, fade"
-        "fadeLayersIn, 1, 1.79, almostLinear"
-        "fadeLayersOut, 1, 1.39, almostLinear"
-        "workspaces, 0, 0, ease"
+      layerrule = [
+        # Proper background blur for wofi
+        "blur,wofi"
+        "blur,waybar"
       ];
-    };
 
-    dwindle = {
-      pseudotile = true;
-      preserve_split = true;
-      force_split = 2;
-    };
+      # LooknFeel
+      general = {
+        gaps_in = 5;
+        gaps_out = 10;
 
-    master = {
-      new_status = "master";
-    };
+        border_size = 2;
 
-    misc = {
-      disable_hyprland_logo = true;
-      disable_splash_rendering = true;
-    };
+        resize_on_border = false;
+
+        allow_tearing = false;
+
+        layout = "dwindle";
+      };
+
+      decoration = {
+        rounding = 4;
+
+        shadow = {
+          enabled = false;
+          range = 30;
+          render_power = 3;
+          ignore_window = true;
+        };
+
+        blur = {
+          enabled = true;
+          size = 5;
+          passes = 2;
+
+          vibrancy = 0.1696;
+        };
+      };
+
+      animations = {
+        enabled = true; # yes, please :)
+
+        bezier = [
+          "easeOutQuint,0.23,1,0.32,1"
+          "easeInOutCubic,0.65,0.05,0.36,1"
+          "linear,0,0,1,1"
+          "almostLinear,0.5,0.5,0.75,1.0"
+          "quick,0.15,0,0.1,1"
+        ];
+
+        animation = [
+          "global, 1, 10, default"
+          "border, 1, 5.39, easeOutQuint"
+          "windows, 1, 4.79, easeOutQuint"
+          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
+          "windowsOut, 1, 1.49, linear, popin 87%"
+          "fadeIn, 1, 1.73, almostLinear"
+          "fadeOut, 1, 1.46, almostLinear"
+          "fade, 1, 3.03, quick"
+          "layers, 1, 3.81, easeOutQuint"
+          "layersIn, 1, 4, easeOutQuint, fade"
+          "layersOut, 1, 1.5, linear, fade"
+          "fadeLayersIn, 1, 1.79, almostLinear"
+          "fadeLayersOut, 1, 1.39, almostLinear"
+          "workspaces, 0, 0, ease"
+        ];
+      };
+
+      dwindle = {
+        pseudotile = true;
+        preserve_split = true;
+        force_split = 2;
+      };
+
+      master = {
+        new_status = "master";
+      };
+
+      misc = {
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+      };
     };
   };
- 
-
-
-
 }

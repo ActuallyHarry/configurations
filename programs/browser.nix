@@ -8,6 +8,9 @@ in
 {
   imports = [zen-browser.homeModules.beta];
 
+  stylix.targets.zen-browser.enable = true;
+  stylix.targets.zen-browser.profileNames = ["default"];
+
   programs.zen-browser = {
     enable = true;
     policies = {

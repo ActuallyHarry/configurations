@@ -1,32 +1,56 @@
-{config, pkgs, nix-colors, ...}:
-let
-  palette = config.colorScheme.palette;
-  convert = nix-colors.lib.conversions.hexToRGBString;
-  backgroundRgb = "rgb(${convert ", " palette.base00})";
-  foregroundRgb = "rgb(${convert ", " palette.base05})";
-in
+{config, pkgs, lib, stylix,  ...}:
 {
- home.file = {
-    ".config/waybar/" = {
-      source = ../resources/waybar;
-      recursive = true;
-    };
-    ".config/waybar/theme.css" = {
-      text = ''
-        @define-color background ${backgroundRgb};
-        * {
-          color: ${foregroundRgb}; 
-        }
 
-        window#waybar {
-          background-color: ${backgroundRgb};
-        }
-      '';
-    };
-  };
-
+  stylix.targets.waybar.enable = true;
+  stylix.targets.waybar.addCss = false;
   programs.waybar = {
     enable = true;
+    style = lib.mkAfter ''
+* {
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-size: 14px;
+  color: @base00;
+  
+}
+
+window#waybar {
+  background-color: @base05;
+}
+
+#workspaces {
+  margin-left: 7px;
+}
+
+#workspaces button {
+  all: initial;
+  padding: 2px 6px;
+  margin-right: 3px;
+}
+
+#custom-dropbox,
+#cpu,
+#power-profiles-daemon,
+#battery,
+#network,
+#bluetooth,
+#wireplumber,
+#tray,
+#clock {
+  background-color: transparent;
+  min-width: 12px;
+  margin-right: 13px;
+}
+
+tooltip {
+  padding: 2px;
+}
+
+tooltip label {
+  padding: 2px;
+}
+    '';
     settings = [
       {
         layer = "top";
@@ -40,7 +64,6 @@ in
           "clock"
         ];
         modules-right = [
-          # "custom/dropbox"
           "tray"
           "bluetooth"
           "network"
