@@ -20,6 +20,8 @@
     ../../programs/neovim.nix
     ../../programs/syncthing.nix
     ../../programs/filemanager.nix
+    ../../programs/obsidian.nix
+    ../../programs/git.nix
   ];
 
   #  home.packages = with pkgs; [

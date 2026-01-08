@@ -3,6 +3,11 @@
   pkgs,
   ...
 }: {
+  home.packages = with pkgs; [
+    file
+    xdg-utils
+  ];
+
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
@@ -15,6 +20,22 @@
       preview = {
         max_width = 1000;
         max_height = 1000;
+      };
+      opener = {
+        play = [
+          {
+            run = ''xdg-open "$@" '';
+            desc = "Open";
+          }
+        ];
+      };
+      open = {
+        rules = [
+          {
+            name = "*.html";
+            use = "play";
+          }
+        ];
       };
     };
 
