@@ -4,7 +4,7 @@
 { config, pkgs, ... }:
 let
 
-  homedn = "home.actuallyadequate.net";
+  homedn = "zitohouse.net";
 
 in {
 
@@ -15,7 +15,7 @@ in {
   ];
 
   # Open Firewall port
-  networking.firewall.allowedTCPPorts = [ 53 ];
+  networking.firewall.allowedTCPPorts = [ 53 853];
   networking.firewall.allowedUDPPorts = [ 53 ];
 
   # Settings for Bind Service
@@ -30,6 +30,17 @@ in {
       "192.168.0.0/16"
     ];
 
+    extraConfig = ''
+      tls local-tls {
+        cert-file "/var/lib/acme/home-wildcard/fullchain.pem";
+        key-file "/var/lib/acme/home-wildcard/key.pem";
+      };
+    '';
+
+    extraOptions = ''
+        listen-on port 853 tls local-tls { any; };
+        listen-on-v6 port 853 tls local-tls { any; };
+    '';
     zones = [ 
        {
         name = "${homedn}";
@@ -40,6 +51,7 @@ in {
     ];
   };
 
+  users.users.named.extraGroups = ["acme"];
 
   # Zone Files
   system.activationScripts.bind-zones.text = ''
@@ -78,6 +90,9 @@ in {
       epistula          A       192.168.10.2
 
       horreum           A       192.168.10.4
+      syncthingrelay    A       192.168.10.4
+      syncthing         A       192.168.10.4
+
       automaton         A       192.168.10.5
 
      
@@ -92,6 +107,7 @@ in {
       noxium            A       192.168.40.99
       radarr            A       192.168.40.99
       sonarr            A       192.168.40.99
+      lidarr            A       192.168.40.99
       prowlarr          A       192.168.40.99
       torrent           A       192.168.40.99
       usenet            A       192.168.40.99
