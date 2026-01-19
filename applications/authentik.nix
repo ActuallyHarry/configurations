@@ -34,12 +34,12 @@
     environmentFile = "/var/lib/authentik.env";
     
     settings.email = {
-        host = "epistula.home.actuallyadequate.net";
+        host = "epistula.zitohouse.net";
         port = 587;
-        username = "authentik@home.actuallyadequate.net";
+        username = "Auctoritas";
         use_tls = true;
         use_ssl = false;
-        from = "authentik@home.actuallyadequate.net";
+        from = "admin@zitohouse.net";
       };
 
 
@@ -62,10 +62,10 @@
 
 
   services.nginx.enable = true;
-  services.nginx.virtualHosts."auctoritas.home.actuallyadequate.net" = {
+  services.nginx.virtualHosts."auctoritas.zitohouse.net" = {
 
     serverName="auctoritas";
-    serverAliases=["auctoritas.home.actuallyadequate.net" "auctoritas.actuallyadequate.net"];
+    serverAliases=["auctoritas.zitohouse.net"];
     enableACME = false; # I am managing it not nginx
     forceSSL = true;
 
