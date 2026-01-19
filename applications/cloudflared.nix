@@ -51,7 +51,7 @@
       SOPS_ZONE_ID_FILE="${config.sops.secrets.cloudflare-zone-id.path}"
 
       # The record name and other non-sensitive settings can remain here or be loaded from another source
-      RECORD_NAME="zitohouse.net" # The A record name to update
+      RECORD_NAME="home.zitohouse.net" # The A record name to update
       TTL=3600                       # DNS TTL (seconds)
       PROXY="false"                  # Set to "true" or "false"
 

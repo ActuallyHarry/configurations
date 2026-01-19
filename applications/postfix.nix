@@ -11,11 +11,11 @@
     enable = true;
 
     transport = ''
-      * smtp:[smtp.gmail.com]:587
+      * smtp:[smtp.mailbox.org]:587
     '';
 
     settings.main = {
-       relayHost = ["smtp.gmail.com:587"];    
+       relayHost = ["smtp.mailbox.org:587"];    
        mynetworks = ["127.0.0.0/8" "192.168.1.0/24" "192.168.10.0/24" "192.168.20.0/24" "192.168.90/24"];
     
       inet_interfaces = "all";
