@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   services.xserver.enable = true;
@@ -10,6 +11,27 @@
     enable = true;
     settings.default_session.command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
   };
+
+  # fingerprint reader
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "libfprint-2-tod1-goodix"
+      "libfprint-2-tod1-goodix-0.0.6"
+    ];
+
+  services.fprintd = {
+    enable = true;
+    package = pkgs.fprintd-tod;
+    tod = {
+      enable = true;
+      # We use the generic TOD driver as a bridge for I2C sensors
+      driver = pkgs.libfprint-2-tod1-goodix;
+    };
+  };
+
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.hyprland.enableGnomeKeyring = true;
+  security.pam.services.tuigreet.enableGnomeKeyring = true;
 
   programs.hyprland = {
     enable = true;
@@ -22,6 +44,7 @@
   environment.systemPackages = with pkgs; [
     # Desktop Packages
     libnotify
+    wl-clipboard
 
     # Hyprland Packages
     hyprshot

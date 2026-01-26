@@ -89,8 +89,9 @@ in
           bing.metaData.hidden = true;
           perplexity.metaData.hidden = true;
           ebay.metaData.hidden = true;
+          google.metaData.hidden = true;
         };
-        order = ["ddg" "google"  "github" "wikipedia" "nix-os" "nix-home-manager"];
+        order = ["ddg" "github" "wikipedia" "nix-os" "nix-home-manager"];
       };
       containersForce = true;
       containers = {

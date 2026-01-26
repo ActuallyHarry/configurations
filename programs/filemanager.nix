@@ -35,6 +35,10 @@
             name = "*.html";
             use = "play";
           }
+          {
+            name = "*.svg";
+            use = "play";
+          }
         ];
       };
     };
@@ -44,6 +48,7 @@
       inherit starship;
       inherit full-border;
       inherit toggle-pane;
+      inherit wl-clipboard;
     };
 
     initLua = ''
@@ -62,6 +67,11 @@
           on = ["c" "m"];
           run = "plugin chmod";
           desc = "Chmod on selected files";
+        }
+        {
+          on = "<C-y>";
+          run = "plugin wl-clipboard";
+          desc = "Copy to system Clipboard";
         }
       ];
     };

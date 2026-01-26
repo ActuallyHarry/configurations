@@ -109,6 +109,9 @@
       "$fileManager" = "ghostty -e yazi";
       "$browser" = "zen";
       "$notes" = "obsidian -disable-gpu";
+      "$passwordManager" = "bitwarden";
+      "$mfaManager" = "enteauth";
+      "$email" = "thunderbird";
 
       # Monitors
       monitor = [
@@ -137,6 +140,8 @@
         "SUPER, B, exec, $browser"
         "SUPER, K, exec, $notes"
         "SUPER, slash, exec, $passwordManager"
+        "SUPER SHIFT, slash, exec, $mfaManager"
+        "SUPER, e, exec, $email"
 
         "SUPER, SPACE, exec, wofi --show drun --sort-order=alphabetical"
         "SUPER SHIFT, SPACE, exec, pkill -SIGUSR1 waybar"
