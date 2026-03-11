@@ -11,11 +11,11 @@
   security.acme = {
  
     acceptTerms = true;
-    defaults.email = "actuallyadequate@gmail.com";
+    defaults.email = "admin@zitohouse.net";
     
     certs."home-wildcard" = {
 
-      domain = "*.home.actuallyadequate.net";
+      domain = "*.zitohouse.net";
       dnsResolver = "1.1.1.1:53";
       dnsProvider = "cloudflare";
       dnsPropagationCheck  = true;

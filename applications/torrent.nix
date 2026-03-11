@@ -2,6 +2,10 @@
 {
 
   networking.firewall.allowedTCPPorts = [443 5000];
+
+  users.groups.media = {
+    gid = 984;
+  };
   
   services.qbittorrent = {
     enable = true;
@@ -26,8 +30,7 @@
         };
         Session.Port = 5000;
         Session.BTProtocol = "TCP";
-        Session.TempPath = "/var/lib/qBittorrent/qBittorrent/cache";
-        Session.TempPathEnabled = true;       
+        Session.IgnoreSlowTorrentsForQueueing = true; 
         MergeTrackersEnabled = true;      
       };
       Core = {
@@ -42,14 +45,16 @@
      };
   };
 
+  users.users.qbittorrent.extraGroups = ["media"];
+
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
 
     # Torrent Subdomain Virtual Host
-    "torrent.home.actuallyadequate.net" = {
+    "torrent.zitohouse.net" = {
       # The key is the FQDN for the subdomain
       serverName = "torrent";
-      serverAliases = ["torrent.home.actuallyadequate.net"];
+      serverAliases = ["torrent.zitohouse.net"];
 
       enableACME = false; # I am managing it not nginx
       forceSSL = true;

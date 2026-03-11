@@ -2,7 +2,9 @@
 {
 
   networking.firewall.allowedTCPPorts = [443];
-  users.groups.media = {};
+  users.groups.media = {
+    gid = 984;
+  };
 
   services.sonarr = {
     enable = true;
@@ -18,38 +20,47 @@
     enable = true;
  };
 
+ services.lidarr = {
+   enable = true;
+   group = "media";
+ };
+
   services.flaresolverr.enable = true;
 
-  sops.secrets."rclone.ini" = {
-    sopsFile = ../secrets/rclone.ini;
-    format = "ini";
-    path = "/var/lib/rclone.ini";
-  };
+  sops.secrets."noxium-priv-key" = {
+     sopsFile = ../secrets/noxium-priv-key;
+     group = builtins.toString config.users.groups.media.name;
+     format = "binary";
+   };
 
-  environment.systemPackages = [pkgs.rclone];
+  environment.systemPackages = [pkgs.cifs-utils];
   fileSystems."/mnt/media" = {
-    device = "noxium-media:media"; # Note: webdav remotes often don't require a path after the colon f>
-    fsType = "rclone";
-    options = [
+   device = "noxium@192.168.10.4:/data/media";
+   fsType = "sshfs";
+   options = [
       "nodev"
       "nofail"
+      "noatime"
       "allow_other"
-      "args2env"
-      "vfs-cache-mode=off"
-      "dir-cache-time=5s"
-      "config=/var/lib/rclone.ini"
+      "reconnect" # Highly recommended for network stability
+      
+      # The key option: points sshfs to the file containing the password.
+      # This file will be managed by sops-nix.
+      "IdentityFile=${config.sops.secrets."noxium-priv-key".path}" 
+      
+      "gid=${builtins.toString config.users.groups.media.gid}"
     ];
-  }; 
+ }; 
   
 
   services.nginx.enable = true;
   services.nginx.virtualHosts = {
 
     # Sonarr Subdomain
-    "sonarr.home.actuallyadequate.net" = {
+    "sonarr.zitohouse.net" = {
       # Use the fully qualified domain name (FQDN) as the virtual host key and serverAlias
       serverName = "sonarr";
-      serverAliases = ["sonarr.home.actuallyadequate.net"];
+      serverAliases = ["sonarr.zitohouse.net"];
 
       enableACME = false; # I am managing it not nginx
       forceSSL = true;
@@ -71,9 +82,9 @@
     };
 
     # Radarr Subdomain
-    "radarr.home.actuallyadequate.net" = {
+    "radarr.zitohouse.net" = {
       serverName = "radarr";
-      serverAliases = ["radarr.home.actuallyadequate.net"];
+      serverAliases = ["radarr.zitohouse.net"];
       
       enableACME = false;
       forceSSL = true;
@@ -92,11 +103,33 @@
         '';
       };
     };
+    # Lidarr Subdomain
+    "lidarr.zitohouse.net" = {
+      serverName = "lidarr";
+      serverAliases = ["lidarr.zitohouse.net"];
+      
+      enableACME = false;
+      forceSSL = true;
+
+      sslCertificate = "/var/lib/acme/home-wildcard/fullchain.pem";
+      sslCertificateKey = "/var/lib/acme/home-wildcard/key.pem";
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8686";
+        proxyWebsockets = true;
+
+        extraConfig = ''
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $host;
+        '';
+      };
+    };
 
     # Prowlarr Subdomain
-    "prowlarr.home.actuallyadequate.net" = {
+    "prowlarr.zitohouse.net" = {
       serverName = "prowlarr";
-      serverAliases = ["prowlarr.home.actuallyharry.net"];
+      serverAliases = ["prowlarr.zitohouse.net"];
       
       enableACME = false;
       forceSSL = true;
