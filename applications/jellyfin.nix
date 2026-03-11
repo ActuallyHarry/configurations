@@ -1,11 +1,12 @@
 {config, pkgs, ...}:
 {
-  networking.firewall.allowedTCPPorts = [ 443 ];  
+  networking.firewall.allowedTCPPorts = [ 443  8096 ];  
 
   services.jellyfin = {
       enable = true;
       cacheDir = "/jellyfin/cache";
       dataDir = "/jellyfin/data";
+      group = "media";
   };
 
   services.jellyseerr = {
@@ -13,41 +14,76 @@
   };
 
 
-  sops.secrets."rclone.ini" = {
-    sopsFile = ../secrets/rclone.ini;
-    format = "ini";
-    path = "/var/lib/rclone.ini";
-  };
+#  sops.secrets."rclone.ini" = {
+#    sopsFile = ../secrets/rclone.ini;
+#    format = "ini";
+#    path = "/var/lib/rclone.ini";
+#  };
 
   # file mounts
-  environment.systemPackages = [pkgs.rclone];
-  fileSystems."/mnt/media" = {
-    device = "horreum-media:media"; # Note: webdav remotes often don't require a path after the colon for the root
-    fsType = "rclone";
-    options = [
-      "nodev"
-      "nofail"
-      "allow_other"
-      "args2env"
-      "config=/var/lib/rclone.ini"
-      "vfs-cache-mode=writes" # from rclone mount command
-      "dir-cache-time=5s"     # from rclone mount command
-    ];
+#  environment.systemPackages = [pkgs.rclone];
+#  fileSystems."/mnt/media" = {
+#    device = "horreum-media:media"; # Note: webdav remotes often don't require a path after the colon for the root
+#    fsType = "rclone";
+#    options = [
+#      "nodev"
+#      "nofail"
+#      "allow_other"
+#      "args2env"
+#      "config=/var/lib/rclone.ini"
+#      "vfs-cache-mode=writes" # from rclone mount command
+#      "dir-cache-time=5s"     # from rclone mount command
+#    ];
+#  };
+
+users.groups.media = {
+    gid = 984;
   };
 
+sops.secrets."noxium-priv-key" = {
+     sopsFile = ../secrets/noxium-priv-key;
+     group = builtins.toString config.users.groups.media.name;
+     format = "binary";
+   };
+
+environment.systemPackages = [pkgs.cifs-utils];
+  fileSystems."/mnt/media" = {
+   device = "noxium@horreum.zitohouse.net:/data/media";
+   fsType = "sshfs";
+   options = [
+      "nodev"
+      "nofail"
+      "noatime"
+      "allow_other"
+      "reconnect" # Highly recommended for network stability
+
+      # The key option: points sshfs to the file containing the password.
+      # This file will be managed by sops-nix.
+      "IdentityFile=${config.sops.secrets."noxium-priv-key".path}"
+
+      "gid=${builtins.toString config.users.groups.media.gid}"
+    ];
+ };
+
   services.nginx.enable = true;
+  services.nginx.commonHttpConfig = ''
+    proxy_headers_hash_max_size 1024;
+    proxy_headers_hash_bucket_size 128;
+  '';
+
   services.nginx.virtualHosts = {
 
     # Jellyfin Subdomain
-    "theatre.home.actuallyadequate.net" = {
+    "theatre.zitohouse.net" = {
       serverName = "theatre";
-      serverAliases = ["theatre.home.actuallyadequate.net"]; # Keeping it simple with one alias
+      serverAliases = ["theatre.zitohouse.net"]; # Keeping it simple with one alias
 
       enableACME = false; # I am managing it not nginx
       forceSSL = true;
 
       sslCertificate = "/var/lib/acme/home-wildcard/fullchain.pem";
       sslCertificateKey = "/var/lib/acme/home-wildcard/key.pem";
+
 
       # Shared security and IP configuration
       extraConfig = ''
@@ -75,9 +111,9 @@
 
 
     # Jellyseerr Subdomain
-    "seerr.home.actuallyadequate.net" = {
+    "seerr.zitohouse.net" = {
       serverName = "seerr";
-      serverAliases = ["seerr.home.actuallyadequate.net"];
+      serverAliases = ["seerr.zitohouse.net"];
 
       enableACME = false;
       forceSSL = true;
