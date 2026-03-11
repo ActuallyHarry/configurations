@@ -35,7 +35,7 @@
     settings = {
       options = {
         listenAddresses = [ # This is the private relay
-          "relay://syncthingrelay.home.actuallyadequate.net:22067/?id=VBRON2Y-NPGV4OR-MW3MXM7-TEDGGVO-IJMDUKJ-RHVS3CD-7MRLPCH-KLJI7QA"
+          "relay://syncthingrelay.zitohouse.net:22067/?id=VBRON2Y-NPGV4OR-MW3MXM7-TEDGGVO-IJMDUKJ-RHVS3CD-7MRLPCH-KLJI7QA"
           "tcp://0.0.0.0:22000"
         ];
         relaysEnabled = true;
@@ -59,15 +59,22 @@
          path = "/data/synced/harry";
          devices = [ "odyssey" "nomadica"];
        };
+       "music" = {
+         path = "/data/media/music";
+         devices = ["odyssey"];
+       };
       };
 
     };   
   }; 
+  users.users.syncthing.extraGroups = [ "media" ];
+
+
  services.nginx.enable = true;
- services.nginx.virtualHosts."syncthing.home.actuallyharry.net" = {
+ services.nginx.virtualHosts."syncthing.zitohouse.net" = {
 
     serverName="syncthing";
-    serverAliases=["syncthing.home.actuallyharry.net"];
+    serverAliases=["syncthing.zitohouse.net"];
 
     enableACME = false; # I am managing it not nginx
     forceSSL = true;
@@ -94,5 +101,7 @@
     };
 
   };
+
+users.users.nginx.extraGroups = [ "acme" ];
 
 }

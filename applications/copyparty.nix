@@ -1,4 +1,4 @@
-{config, pkgs, inputs, ...}:
+{config, pkgs, lib, inputs, ...}:
 let
   copypartyPkg = pkgs.copyparty.overridePythonAttrs (oldAttrs: {
     propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [
@@ -11,9 +11,29 @@ in
    imports = [
     inputs.copyparty.nixosModules.default
    ];
+
+  # sops.secrets."sshfs/noxium-pubkey" = {
+  #  # This secret will contain the contents of myuser_sshfs_key.pub
+    # Ensure this is owned by the user so SSH can read it
+  #  owner = "noxium";
+  #  group = "users";
+#  };
+
+   users.users.noxium = {
+    # Set the user's primary group
+    group = "users"; 
+    
+    # Enable SSH login for this user
+    extraGroups = [ "wheel" "media" ]; 
+    isNormalUser = true;
+    #openssh.authorizedKeys.keyFiles = lib.mkForce [
+    #  "${config.sops.secrets."sshfs/noxium-pubkey".path}"
+    #];
+
+   };
  
 
-   networking.firewall.allowedTCPPorts = [ 443 445];
+   networking.firewall.allowedTCPPorts = [ 443 3945];
 
    sops.secrets."copyparty/jellyfin" = {
      sopsFile = ../secrets/copyparty.yaml;
@@ -25,12 +45,14 @@ in
      owner = config.services.copyparty.user; 
    };
 
-
+   users.groups.media = {
+    gid = 984;
+   };
 
    services.copyparty = {
       enable = true;
       user = "copyparty";
-      group = "copyparty";
+      group = "media";
 
       package = copypartyPkg;  
 
@@ -40,8 +62,6 @@ in
         rproxy = 1;
         e2dsa = true;
         dedup = true;
-        smbw = true;
-        smb-port = 3945; 
      };
 
       accounts = {
@@ -65,10 +85,10 @@ in
    };
 
   services.nginx.enable = true;
-  services.nginx.virtualHosts."horreum.home.actuallyadequate.net" = {
+  services.nginx.virtualHosts."horreum.zitohouse.net" = {
 
     serverName="horreum";
-    serverAliases=["horreum.home.actuallyadequate.net" "horreum.actuallyadequate.net"];
+    serverAliases=["horreum.zitohouse.net"];
     enableACME = false; # I am managing it not nginx
     forceSSL = true;
 
@@ -94,20 +114,6 @@ in
     };
 
   };
-
-  services.nginx.streamConfig = ''
-    upstream copyparty_smb {
-        server 127.0.0.1:3945;
-    }
-    
-    server {
-        # Listen on the standard SMB port (445)
-        listen 445; 
-        
-        # Forward the raw TCP stream to the upstream block
-        proxy_pass copyparty_smb;
-    }
-  '';
 
   users.users.nginx.extraGroups = [ "acme" ];
 
