@@ -1,10 +1,11 @@
 ############################################################
 # Sentinel Machine
 ############################################################
-{ config, pkgs, ... }:
+{ config, pkgs, lib, modulesPath, ... }:
 {
   imports = [
     # Hardware
+    "${modulesPath}/virtualisation/lxc-container.nix"
     ./hardware-configuration.nix
     # Modules
     ../../modules/admin.nix
@@ -17,21 +18,17 @@
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
-    ../../applications/dns.nix
-    ../../applications/cloudflared.nix
-    ../../applications/postfix.nix
+    ../../applications/adventure-log.nix
   ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+ nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  networking.hostName = "sentinel";
+  networking.hostName = "praxis";
   networking.useDHCP = false;
   networking.interfaces = { 
-    ens18 = {
+    eth0 = {
       ipv4.addresses = [ { 
-        address = "192.168.10.2";
+        address = "192.168.10.6";
         prefixLength = 16;
       } ];
     };
@@ -47,7 +44,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11";
+  system.stateVersion = "26.05";
 
   
 

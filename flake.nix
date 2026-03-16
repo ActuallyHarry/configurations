@@ -40,6 +40,14 @@
             ./machines/vanguard/configuration.nix
           ];
         };
+  
+        praxis = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+       
+          modules = [
+            ./machines/praxis/configuration.nix
+          ];
+        };
       };
     };
 }
