@@ -10,7 +10,7 @@
 
   stylix.enable = true;
   stylix.image = ../resources/backgrounds/background1;
-  stylix.polarity = "light";
+  stylix.polarity = "dark";
   stylix.fonts = {
     serif = config.stylix.fonts.monospace;
     sansSerif = config.stylix.fonts.monospace;
