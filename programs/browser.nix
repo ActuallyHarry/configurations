@@ -1,19 +1,33 @@
 {
   config,
   pkgs,
-  zen-browser,
+  nix-flatpak,
   ...
 }: let
-  mkExtensionSettings = builtins.mapAttrs (_: pluginId: {
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/${pluginId}/latest.xpi";
-    installation_mode = "force_installed";
-  });
+  # mkExtensionSettings = builtins.mapAttrs (_: pluginId: {
+  #  install_url = "https://addons.mozilla.org/firefox/downloads/latest/${pluginId}/latest.xpi";
+  #  installation_mode = "force_installed";
+  # });
 in {
-  imports = [zen-browser.homeModules.beta];
+  imports = [nix-flatpak.homeManagerModules.nix-flatpak];
+  services.flatpak.enable = true;
+  services.flatpak.remotes = [
+    {
+      name = "flathub";
+      location = "https://flathub.org/repo/flathub.flatpakrepo";
+    }
+  ];
+  services.flatpak.packages = [
+    "app.zen_browser.zen"
+  ];
+  home.sessionVariables = {
+    XDG_DATA_DIRS = "$XDG_DATA_DIRS:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share";
+  };
+  # imports = [zen-browser.homeModules.beta];
 
-  stylix.targets.zen-browser.enable = true;
-  stylix.targets.zen-browser.profileNames = ["default"];
-
+  #stylix.targets.zen-browser.enable = true;
+  #stylix.targets.zen-browser.profileNames = ["default"];
+  /*
   programs.zen-browser = {
     enable = true;
     policies = {
@@ -184,4 +198,5 @@ in {
       };
     };
   };
+  */
 }

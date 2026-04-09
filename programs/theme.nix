@@ -18,4 +18,5 @@
   };
   stylix.autoEnable = false;
   stylix.targets.gtk.enable = true;
+  gtk.gtk4.theme = config.gtk.theme;
 }

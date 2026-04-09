@@ -9,7 +9,7 @@
   # Initial login experience
   services.greetd = {
     enable = true;
-    settings.default_session.command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+    settings.default_session.command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd start-hyprland";
   };
 
   # fingerprint reader
@@ -18,16 +18,6 @@
       "libfprint-2-tod1-goodix"
       "libfprint-2-tod1-goodix-0.0.6"
     ];
-
-  services.fprintd = {
-    enable = true;
-    package = pkgs.fprintd-tod;
-    tod = {
-      enable = true;
-      # We use the generic TOD driver as a bridge for I2C sensors
-      driver = pkgs.libfprint-2-tod1-goodix;
-    };
-  };
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.hyprland.enableGnomeKeyring = true;

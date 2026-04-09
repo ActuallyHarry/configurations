@@ -1,55 +1,59 @@
-{config, pkgs, lib, stylix,  ...}:
 {
-
+  config,
+  pkgs,
+  lib,
+  stylix,
+  ...
+}: {
   stylix.targets.waybar.enable = true;
   stylix.targets.waybar.addCss = false;
   programs.waybar = {
     enable = true;
     style = lib.mkAfter ''
-* {
-  border: none;
-  border-radius: 0;
-  min-height: 0;
-  font-size: 14px;
-  color: @base00;
-  
-}
+      * {
+        border: none;
+        border-radius: 0;
+        min-height: 0;
+        font-size: 14px;
+        color: @base00;
 
-window#waybar {
-  background-color: @base05;
-}
+      }
 
-#workspaces {
-  margin-left: 7px;
-}
+      window#waybar {
+        background-color: @base05;
+      }
 
-#workspaces button {
-  all: initial;
-  padding: 2px 6px;
-  margin-right: 3px;
-}
+      #workspaces {
+        margin-left: 7px;
+      }
 
-#custom-dropbox,
-#cpu,
-#power-profiles-daemon,
-#battery,
-#network,
-#bluetooth,
-#wireplumber,
-#tray,
-#clock {
-  background-color: transparent;
-  min-width: 12px;
-  margin-right: 13px;
-}
+      #workspaces button {
+        all: initial;
+        padding: 2px 6px;
+        margin-right: 3px;
+      }
 
-tooltip {
-  padding: 2px;
-}
+      #custom-dropbox,
+      #cpu,
+      #power-profiles-daemon,
+      #battery,
+      #network,
+      #bluetooth,
+      #wireplumber,
+      #tray,
+      #clock {
+        background-color: transparent;
+        min-width: 12px;
+        margin-right: 13px;
+      }
 
-tooltip label {
-  padding: 2px;
-}
+      tooltip {
+        padding: 2px;
+      }
+
+      tooltip label {
+        padding: 2px;
+      }
     '';
     settings = [
       {
@@ -89,11 +93,11 @@ tooltip label {
             active = "󱓻";
           };
           persistent-workspaces = {
-            "1" = [ ];
-            "2" = [ ];
-            "3" = [ ];
-            "4" = [ ];
-            "5" = [ ];
+            "1" = [];
+            "2" = [];
+            "3" = [];
+            "4" = [];
+            "5" = [];
           };
         };
         cpu = {
@@ -170,7 +174,7 @@ tooltip label {
           format-disabled = "󰂲";
           format-connected = "";
           tooltip-format = "Devices connected: {num_connections}";
-          on-click = "blueberry";
+          on-click = "ghostty -e bluetuith";
         };
         wireplumber = {
           # Changed from "pulseaudio"
@@ -197,5 +201,5 @@ tooltip label {
         };
       }
     ];
-  }; 
+  };
 }
