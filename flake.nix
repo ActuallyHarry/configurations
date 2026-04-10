@@ -28,7 +28,6 @@
     };
   };
 
-<<<<<<< HEAD
   outputs = {
     self,
     nixpkgs,
@@ -45,55 +44,6 @@
       inherit system;
       config = {
         allowUnfree = true;
-=======
-  outputs = { self, nixpkgs, sops-nix, ... }@ inputs: 
-    let
-      system =  "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config = { 
-          allowUnfree = true;
-        };
-      };
-    in  {
-
-      #####################################################################
-      # MACHINES
-      #####################################################################
-      
-      nixosConfigurations = {
-
-	# Hypervisor Hosts
-        centurion = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs; inherit system; };
-
-          modules = [
-            ./machines/centurion/configuration.nix
-          ];
-        };
-
-        auxilium = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs; inherit system; };
-
-          modules = [
-           ./machines/auxilium/configuration.nix
-          ];
-        };
-
-        # Network Manager
-        sentinel = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs; inherit system; };
-          modules = [ ./machines/sentinel/configuration.nix ];
-        };
-
-        vanguard  = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs; inherit system; };
-
-          modules = [
-            ./machines/vanguard/configuration.nix
-          ];
-        };
->>>>>>> 001c2f9 (auxilium hypervisor)
       };
     };
   in {
@@ -111,6 +61,17 @@
 
         modules = [
           ./machines/centurion/configuration.nix
+        ];
+      };
+
+      auxilium = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit system;
+        };
+
+        modules = [
+          ./machines/auxilium/configuration.nix
         ];
       };
 
