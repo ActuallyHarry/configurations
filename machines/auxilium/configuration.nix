@@ -1,12 +1,10 @@
 ############################################################
-# Sentinel Machine
+# {Hostname} Machine
 ############################################################
-<<<<<<< HEAD:machines/praxis/configuration.nix
-{ config, pkgs, lib, modulesPath, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
-    # Include the default incus configuration.
-    "${modulesPath}/virtualisation/lxc-container.nix"
+    # Hardware
     ./hardware-configuration.nix
     # Modules
     ../../modules/admin.nix
@@ -19,22 +17,40 @@
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
-    ../../applications/adventure-log.nix
+    ../../applications/incus.nix
   ];
 
- nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  #Incus Settings
+  homeIncus = {
+     hostname = "auxilium";
+     ipv4 = "192.168.90.252";
+     machineId = "44306091";
+  };
 
-  networking.hostName = "praxis";
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  networking.hostName = "auxilium";
   networking.useDHCP = false;
-  networking.interfaces = { 
-    eth0 = {
-      ipv4.addresses = [ { 
-        address = "192.168.10.6";
+  networking.interfaces = {
+    enp0s31f6 = {
+       useDHCP = false;
+    };
+    br0 = {
+      ipv4.addresses = [ {
+        address = "192.168.90.252";
         prefixLength = 16;
       } ];
     };
   };
-  networking.defaultGateway = "192.168.0.1";
+
+  networking.bridges.br0.interfaces = ["enp0s31f6"];
+
+  networking.defaultGateway = {
+    address= "192.168.0.1";
+    interface= "br0";
+  };
   networking.nameservers = [ "192.168.10.2 192.168.0.1"];
   networking.networkmanager.enable = true;
 
@@ -45,7 +61,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "26.05";
+  system.stateVersion = "25.05";
 
   
 

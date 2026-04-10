@@ -21,6 +21,13 @@
      environmentFile = "/var/lib/vaultwarden.env";
 
      config = {
+<<<<<<< HEAD
+        DOMAIN = "https://occultus.zitohouse.net";
+        SIGNUPS_ALLOWED = false;
+ 
+        ROCKET_ADDRESS = "127.0.0.1";
+        ROCKET_PORT = 8222;      
+=======
         DOMAIN = "https://occultus.home.actuallyharry.net";
         SIGNUPS_ALLOWED = false;
  
@@ -34,14 +41,22 @@
         SSO_CLIENT_CACHE_EXPIRATION = 0;
         SSO_ONLY = false; # Set to true to disable email+master password login and require SSO
         SSO_SIGNUPS_MATCH_EMAIL = true; # Match first SSO login to existing account by email       
+>>>>>>> main
      };
   };
 
   services.nginx.enable = true;
+<<<<<<< HEAD
+  services.nginx.virtualHosts."occultus.zitohouse.net" = {
+
+    serverName="occultus";
+    serverAliases=["occultus.zitohouse.net"];
+=======
   services.nginx.virtualHosts."occultus.home.actuallyharry.net" = {
 
     serverName="occultus";
     serverAliases=["occultus.home.actuallyharry.net" "occultus.actuallyharry.net"];
+>>>>>>> main
 
     enableACME = false; # I am managing it not nginx  
     forceSSL = true;
