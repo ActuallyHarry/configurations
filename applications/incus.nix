@@ -21,12 +21,6 @@ in {
     };
   };
 
-  config.boot.kernelModules = ["kvm-amd" "kvm-intel"]; # Include both for compatibility
-  config.boot.supportedFilesystems = ["zfs"];
-  config.networking.hostId = cfg.machineId;
-  # This option is necessary to ensure the thin-provisioning-tools
-  # binaries (like thin_check, which LVM uses) are correctly patched
-
   # This option ensures that dm-snapshot and dm-thin-pool are included
   # in the initrd, which is necessary for LVM thin provisioning to work
   # when LVM is managed early in the boot process.
@@ -35,6 +29,9 @@ in {
     "dm-thin-pool"
   ];
 
+  config.boot.kernelModules = ["kvm-amd" "kvm-intel"]; # Include both for compatibility
+  config.boot.supportedFilesystems = ["zfs"];
+  config.networking.hostId = cfg.machineId;
   # This option is necessary to ensure the thin-provisioning-tools
   # binaries (like thin_check, which LVM uses) are correctly patched
   # and accessible for LVM operations.
