@@ -1,12 +1,12 @@
 ############################################################
 # Sentinel Machine
 ############################################################
-{ modulesPath, config, pkgs, lib, ... }:
+<<<<<<< HEAD:machines/praxis/configuration.nix
+{ config, pkgs, lib, modulesPath, ... }:
 {
   imports = [
     # Include the default incus configuration.
     "${modulesPath}/virtualisation/lxc-container.nix"
-    # Hardware
     ./hardware-configuration.nix
     # Modules
     ../../modules/admin.nix
@@ -19,19 +19,17 @@
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
-    ../../applications/dns.nix
-    ../../applications/cloudflared.nix
-    ../../applications/postfix.nix
+    ../../applications/adventure-log.nix
   ];
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+ nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  networking.hostName = "sentinel";
+  networking.hostName = "praxis";
   networking.useDHCP = false;
   networking.interfaces = { 
     eth0 = {
       ipv4.addresses = [ { 
-        address = "192.168.10.2";
+        address = "192.168.10.6";
         prefixLength = 16;
       } ];
     };
@@ -47,7 +45,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 
   
 
