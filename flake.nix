@@ -26,8 +26,46 @@
       url = "github:NotAShelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    authentik-nix = {
+      url = "github:nix-community/authentik-nix";
+    };
   };
 
+<<<<<<< HEAD
+  outputs = { self, nixpkgs, sops-nix, ... }@ inputs: 
+    let
+      system =  "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config = { 
+          allowUnfree = true;
+        };
+      };
+    in  {
+
+      #####################################################################
+      # MACHINES
+      #####################################################################
+      
+      nixosConfigurations = {
+
+        # Network Manager
+        sentinel = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+          modules = [ ./machines/sentinel/configuration.nix ];
+        };
+
+        # Security Manager
+        vanguard  = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs; inherit system; };
+
+          modules = [
+            inputs.authentik-nix.nixosModules.default
+            ./machines/vanguard/configuration.nix
+          ];
+        };
+=======
   outputs = {
     self,
     nixpkgs,
@@ -44,6 +82,7 @@
       inherit system;
       config = {
         allowUnfree = true;
+>>>>>>> main
       };
     };
   in {
