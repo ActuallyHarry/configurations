@@ -1,13 +1,13 @@
 ###############################################################
 # DNS Server Settings
 ###############################################################
-{ config, pkgs, ... }:
-let
-
+{
+  config,
+  pkgs,
+  ...
+}: let
   homedn = "zitohouse.net";
-
 in {
-
   # Required Programs
   environment.systemPackages = with pkgs; [
     dig
@@ -15,8 +15,8 @@ in {
   ];
 
   # Open Firewall port
-  networking.firewall.allowedTCPPorts = [ 53 853];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+  networking.firewall.allowedTCPPorts = [53 853];
+  networking.firewall.allowedUDPPorts = [53];
 
   # Settings for Bind Service
   services.bind = {
@@ -38,17 +38,17 @@ in {
     '';
 
     extraOptions = ''
-        response-policy { zone "rpz.zitohouse.net"; };
-        listen-on port 853 tls local-tls { any; };
-        listen-on-v6 port 853 tls local-tls { any; };
+      response-policy { zone "rpz.zitohouse.net"; };
+      listen-on port 853 tls local-tls { any; };
+      listen-on-v6 port 853 tls local-tls { any; };
     '';
-    zones = [ 
-       {
+    zones = [
+      {
         name = "rpz.${homedn}";
         allowQuery = ["any"];
         file = "/etc/bind/zones/rpz.${homedn}.zone";
         master = true;
-       }
+      }
     ];
   };
 
@@ -58,7 +58,7 @@ in {
   system.activationScripts.bind-zones.text = ''
     mkdir -p /etc/bind/zones
     chown -R named /etc/bind/
-  '';  
+  '';
 
   # Home Domain Zone File
   environment.etc."bind/zones/rpz.${homedn}.zone" = {
@@ -67,48 +67,48 @@ in {
     group = "named";
     mode = "0644";
     text = ''
-$TTL 60
-@ IN SOA sentinel.zitohouse.net. admin.zitohouse.net. (
-      2026011806 ; serial
-      21600      ; refresh
-      3600       ; retry
-      604800     ; expire
-      86400      ; minimum
-)
-@ IN NS localhost.
+      $TTL 60
+      @ IN SOA sentinel.zitohouse.net. admin.zitohouse.net. (
+            2026011806 ; serial
+            21600      ; refresh
+            3600       ; retry
+            604800     ; expire
+            86400      ; minimum
+      )
+      @ IN NS localhost.
 
-wayfinder.zitohouse.net      A 192.168.0.1
+      wayfinder.zitohouse.net      A 192.168.0.1
 
-centurion.zitohouse.net      A 192.168.90.253
-auxilium.zitohouse.net       A 192.168.90.252
-facultas.zitohouse.net       A 192.168.90.251
+      centurion.zitohouse.net      A 192.168.90.253
+      auxilium.zitohouse.net       A 192.168.90.252
+      facultas.zitohouse.net       A 192.168.90.251
 
-sentinel.zitohouse.net       A 192.168.10.2
-epistula.zitohouse.net       A 192.168.10.2
+      sentinel.zitohouse.net       A 192.168.10.2
+      epistula.zitohouse.net       A 192.168.10.2
 
-horreum.zitohouse.net        A 192.168.10.4
-syncthingrelay.zitohouse.net A 192.168.10.4
-syncthing.zitohouse.net      A 192.168.10.4
+      horreum.zitohouse.net        A 192.168.10.4
+      syncthingrelay.zitohouse.net A 192.168.10.4
+      syncthing.zitohouse.net      A 192.168.10.4
 
-automaton.zitohouse.net      A 192.168.10.5
+      automaton.zitohouse.net      A 192.168.10.5
 
-spectaculum.zitohouse.net    A 192.168.10.7
-theatre.zitohouse.net        A 192.168.10.7
-seerr.zitohouse.net          A 192.168.10.7
+      spectaculum.zitohouse.net    A 192.168.10.7
+      theatre.zitohouse.net        A 192.168.10.7
+      seerr.zitohouse.net          A 192.168.10.7
 
-vanguard.zitohouse.net       A 192.168.10.3
-occultus.zitohouse.net       A 192.168.10.3
-auctoritas.zitohouse.net     A 192.168.10.3
+      vanguard.zitohouse.net       A 192.168.10.3
+      occultus.zitohouse.net       A 192.168.10.3
+      auctoritas.zitohouse.net     A 192.168.10.3
 
-noxium.zitohouse.net         A 192.168.40.99
-radarr.zitohouse.net         A 192.168.40.99
-sonarr.zitohouse.net         A 192.168.40.99
-lidarr.zitohouse.net         A 192.168.40.99
-prowlarr.zitohouse.net       A 192.168.40.99
-torrent.zitohouse.net        A 192.168.40.99
-usenet.zitohouse.net         A 192.168.40.99
+      noxium.zitohouse.net         A 192.168.40.99
+      radarr.zitohouse.net         A 192.168.40.99
+      sonarr.zitohouse.net         A 192.168.40.99
+      lidarr.zitohouse.net         A 192.168.40.99
+      prowlarr.zitohouse.net       A 192.168.40.99
+      torrent.zitohouse.net        A 192.168.40.99
+      usenet.zitohouse.net         A 192.168.40.99
 
-labratorium.zitohouse.net    A 192.168.30.254
+      labratorium.zitohouse.net    A 192.168.30.254
     '';
   };
 }
