@@ -19,7 +19,6 @@
     ../../modules/fonts.nix
     ../../modules/desktop.nix
     ../../modules/zsh.nix
-    ../../modules/flatpak.nix
     # Applications
     ../../applications/git.nix
     ../../applications/core.nix
