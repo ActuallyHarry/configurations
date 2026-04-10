@@ -147,6 +147,17 @@
         ];
       };
 
+      noxium = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit system;
+        };
+
+        modules = [
+          ./machines/noxium/configuration.nix
+        ];
+      };
+
       nomadica = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
