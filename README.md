@@ -92,6 +92,11 @@ Contains application configuration
 #### dns
 - In order for DNS to start make sure that /etc/rndc.key is made - it as trouble sometimes
 
+#### Rclone
+- If needing to generate a password for an rclone mount you need to do this
+- `nix shell nixpkgs#rclone`
+- `rclone obscure {mysecretpassword}``
+
 ### Machines
 Contains configuration.nix which only pulls in components form applications and modules, as well as any required specific configurations, includes a hardlink to hardware.nix which should be gitignored.
 ### Lib
