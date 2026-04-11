@@ -168,6 +168,17 @@
           ./machines/nomadica/configuration.nix
         ];
       };
+
+       praetorian = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit system;
+        };
+
+        modules = [
+          ./machines/praetorian/configuration.nix
+        ];
+      };
     };
 
     ######################################################

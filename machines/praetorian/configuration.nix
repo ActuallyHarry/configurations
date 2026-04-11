@@ -28,7 +28,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nomadica";
+  networking.hostName = "praetorian";
   networking.networkmanager.enable = true;
 
   users.users.harry = {
