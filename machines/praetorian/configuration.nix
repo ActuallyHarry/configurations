@@ -19,10 +19,12 @@
     ../../modules/fonts.nix
     ../../modules/desktop.nix
     ../../modules/zsh.nix
+    ../../modules/nvidia.nix
     # Applications
     ../../applications/git.nix
     ../../applications/core.nix
     ../../applications/flatpak.nix
+    ../../applications/games.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
