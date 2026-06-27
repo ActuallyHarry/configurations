@@ -4,8 +4,8 @@
 
   services.jellyfin = {
       enable = true;
-      cacheDir = "/jellyfin/cache";
-      dataDir = "/jellyfin/data";
+      cacheDir = "/mnt/media/jellyfin/cache";
+      dataDir = "/mnt/media/jellyfin/data";
       group = "media";
   };
 
@@ -40,31 +40,53 @@ users.groups.media = {
     gid = 984;
   };
 
-sops.secrets."noxium-priv-key" = {
-     sopsFile = ../secrets/noxium-priv-key;
-     group = builtins.toString config.users.groups.media.name;
-     format = "binary";
-   };
+systemd.services.jellyfin = {
+  serviceConfig = {
+    
+    # Loosens systemd namespace restrictions so it can access 'nobody' shares
+    ProtectHome = "false";
+    ProtectSystem = "false";
+  };
+};
 
-environment.systemPackages = [pkgs.cifs-utils];
-  fileSystems."/mnt/media" = {
-   device = "noxium@horreum.zitohouse.net:/data/media";
-   fsType = "sshfs";
-   options = [
-      "nodev"
-      "nofail"
-      "noatime"
-      "allow_other"
-      "reconnect" # Highly recommended for network stability
+#sops.secrets."noxium-priv-key" = {
+#     sopsFile = ../secrets/noxium-priv-key;
+#     group = builtins.toString config.users.groups.media.name;
+#     format = "binary";
+#   };
 
-      # The key option: points sshfs to the file containing the password.
-      # This file will be managed by sops-nix.
-      "IdentityFile=${config.sops.secrets."noxium-priv-key".path}"
+#sops.secrets."ugreen-smb-creds" = {
+#   sopsFile = ../secrets/ugreen-smb-creds;
+#   group = builtins.toString config.users.groups.media.name;
+#   format = "binary";
+#};
 
-      "gid=${builtins.toString config.users.groups.media.gid}"
-    ];
- };
-
+#environment.systemPackages = [pkgs.cifs-utils];
+#fileSystems."/mnt/media" = {
+#  device = "//192.168.0.144/media"; # Note the SMB slashes
+#  fsType = "cifs";
+#  options = [
+#    "nodev"
+#    "nofail"
+#    "noatime"
+#    "guest" # Remove this if using credentials
+#    
+#    # Crucial part: Force local file ownership to your media group
+#    "uid=${builtins.toString config.users.users.jellyfin.uid}" # or your main app user
+#    "gid=${builtins.toString config.users.groups.media.gid}"
+#    
+#    # File/Dir permissions inside the mount
+#    "file_mode=0775"
+#    "dir_mode=0775"
+#    
+#    # Performance tweaks for streaming/torrents
+#    "iocharset=utf8"
+#    "vers=3.0" 
+#    
+#    # If using a password managed by sops-nix:
+#    "credentials=${config.sops.secrets."ugreen-smb-creds".path}"
+#  ];
+#};
   services.nginx.enable = true;
   services.nginx.commonHttpConfig = ''
     proxy_headers_hash_max_size 1024;
