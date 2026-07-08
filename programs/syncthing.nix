@@ -5,11 +5,12 @@
 }: {
   services.syncthing = {
     enable = true;
+    tray.enable = true;
     settings = {
       options = {
         listenAddresses = [
           # This is the private relay
-          "relay://syncthingrelay.home.actuallyadequate.net:22067/?id=VBRON2Y-NPGV4OR-MW3MXM7-TEDGGVO-IJMDUKJ-RHVS3CD-7MRLPCH-KLJI7QA"
+          "relay://syncthingrelay.zitohouse.net:22067/?id=CXIK7PV-DXIKW2D-QHRY7GZ-DF4HTGE-UX4QTDF-BUZB5LS-M3QPFNL-NQ2ZKAZ"
           "tcp://0.0.0.0:22000"
         ];
         relaysEnabled = true;

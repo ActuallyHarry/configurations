@@ -32,6 +32,7 @@
     };
 
     copyparty.url = "github:9001/copyparty";
+    affinity-nix.url = "github:mrshmllow/affinity-nix";
   };
 
   outputs = {
@@ -45,6 +46,7 @@
     nix-flatpak,
     authentik-nix,
     copyparty,
+    affinity-nix,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -169,7 +171,7 @@
         ];
       };
 
-       praetorian = nixpkgs.lib.nixosSystem {
+      praetorian = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
           inherit system;
@@ -192,6 +194,7 @@
           inherit nix-flatpak;
           inherit stylix;
           inherit nvf;
+          inherit affinity-nix;
         };
         modules = [
           ./users/harry/home.nix

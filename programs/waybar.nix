@@ -40,6 +40,7 @@
       #network,
       #bluetooth,
       #wireplumber,
+      #privacy,
       #tray,
       #clock {
         background-color: transparent;
@@ -53,6 +54,7 @@
 
       tooltip label {
         padding: 2px;
+        color: white;
       }
     '';
     settings = [
@@ -69,9 +71,10 @@
         ];
         modules-right = [
           "tray"
+          "privacy"
           "bluetooth"
-          "network"
           "wireplumber"
+          "network"
           "cpu"
           "power-profiles-daemon"
           "battery"
@@ -170,21 +173,26 @@
           };
         };
         bluetooth = {
-          format = "󰂯";
-          format-disabled = "󰂲";
-          format-connected = "";
-          tooltip-format = "Devices connected: {num_connections}";
+          # This shows the icon whenever the controller is powered on
+          format = "";
+          format-disabled = "󰂲"; # Grayed out or "off" icon
+          # Shows icon + number of devices when connected
+          format-connected = "";
+          tooltip-format = "{controller_alias}\t{controller_address}";
+          tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
           on-click = "ghostty -e bluetuith";
         };
         wireplumber = {
-          # Changed from "pulseaudio"
-          "format" = "";
-          format-muted = "󰝟";
+          # Use {icon} to pull from format-icons, and {volume}% to show the level
+          format = "{icon}";
+          format-muted = "󰝟"; # Using a standard Nerd Font icon
+          format-icons = {
+            default = ["󰕿" "󰖀" "󰕾"]; # Low, Mid, High icons
+          };
           scroll-step = 5;
           on-click = "pavucontrol";
-          tooltip-format = "Playing at {volume}%";
-          on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; # Updated command
-          max-volume = 150; # Optional: allow volume over 100%
+          on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         };
         tray = {
           spacing = 13;

@@ -25,6 +25,8 @@
     ../../applications/core.nix
     ../../applications/flatpak.nix
     ../../applications/games.nix
+    ../../applications/ai.nix
+    ../../applications/sunshine.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -36,7 +38,7 @@
   users.users.harry = {
     isNormalUser = true;
     description = "harry";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "uinput"];
   };
 
   # This value determines the NixOS release from which the default

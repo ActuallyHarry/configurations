@@ -115,10 +115,12 @@
 
       # Monitors
       monitor = [
-        # THis would be good to calcualte somehow
-        "eDP-1, 1920x1080@60, auto, 1"
-      ];
+        # 1080p Philips Monitor (Left side)
+        "HDMI-A-1, 1920x1080@60, 0x0, 1"
 
+        # 4K Acer Monitor (Right side, scaled to 1.5)
+        "DP-3, 3840x2160@60, 1920x0, 1.5"
+      ];
       # Autostart
       exec-once = [
         "hyprsunset"
@@ -307,7 +309,6 @@
         "float on, match:class ^(org.pulseaudio.pavucontrol|blueberry.py)$"
 
         # Float Steam, fullscreen RetroArch
-        "float on , match:class ^(steam)$"
         "fullscreen on, match:class ^(com.libretro.RetroArch)$"
 
         # Just dash of transparency

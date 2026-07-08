@@ -24,8 +24,10 @@
     ../../programs/git.nix
     ../../programs/email.nix
     ../../programs/password_manager.nix
+    ../../programs/blender.nix
+    # ../../programs/affinity.nix
   ];
-
+  nixpkgs.config.allowUnfree = true;
   #  home.packages = with pkgs; [
   #    starship
   #    obsidian
