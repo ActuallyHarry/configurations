@@ -19,6 +19,7 @@
     ../../applications/git.nix
     ../../applications/ssh.nix
     ../../applications/adventure-log.nix
+    ../../applications/syncthing.nix
   ];
 
  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
