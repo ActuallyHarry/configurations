@@ -14,6 +14,7 @@
     ../../modules/nix_store.nix
     ../../modules/sops.nix
     ../../modules/ssl_wildcard.nix
+    ../../modules/nas.nix
     # Applications
     ../../applications/git.nix
     ../../applications/ssh.nix
