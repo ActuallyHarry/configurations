@@ -24,6 +24,7 @@
     ../../programs/git.nix
     ../../programs/email.nix
     ../../programs/password_manager.nix
+    ../../programs/media.nix
   ];
 
   #  home.packages = with pkgs; [

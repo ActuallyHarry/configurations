@@ -22,7 +22,11 @@
     # Applications
     ../../applications/git.nix
     ../../applications/core.nix
+    ../../applications/docker.nix
+    ../../applications/syncthing-ports.nix
   ];
+
+  services.flatpak.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
