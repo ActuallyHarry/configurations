@@ -4,8 +4,6 @@
 
   services.jellyfin = {
       enable = true;
-      cacheDir = "/mnt/media/jellyfin/cache";
-      dataDir = "/mnt/media/jellyfin/data";
       group = "media";
   };
 
