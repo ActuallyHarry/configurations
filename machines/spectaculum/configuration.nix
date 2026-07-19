@@ -18,6 +18,7 @@
     ../../applications/ssh.nix
     ../../applications/jellyfin.nix
    ../../applications/navidrome.nix
+   ../../applications/immich.nix
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

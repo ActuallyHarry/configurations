@@ -1,4 +1,4 @@
-{config, pkgs, ...}:
+{config, pkgs, lib, ...}:
 {
   networking.firewall.allowedTCPPorts = [ 443  8096 ];  
 
@@ -7,7 +7,7 @@
       group = "media";
   };
 
-  services.jellyseerr = {
+  services.seerr = {
       enable = true;
   };
 
@@ -43,7 +43,7 @@ systemd.services.jellyfin = {
     
     # Loosens systemd namespace restrictions so it can access 'nobody' shares
     ProtectHome = "false";
-    ProtectSystem = "false";
+    ProtectSystem = lib.mkForce "false";
   };
 };
 
