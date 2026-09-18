@@ -22,7 +22,7 @@ in {
   services.bind = {
     enable = true;
 
-    forwarders = ["192.168.0.1"];
+    forwarders = ["192.168.10.1"];
 
     cacheNetworks = [
       "127.0.0.0/24"
@@ -77,7 +77,7 @@ $TTL 60
 )
 @ IN NS localhost.
 
-wayfinder.zitohouse.net      A 192.168.0.1
+wayfinder.zitohouse.net      A 192.168.1.1
 
 centurion.zitohouse.net      A 192.168.90.253
 auxilium.zitohouse.net       A 192.168.90.252
@@ -87,18 +87,24 @@ sentinel.zitohouse.net       A 192.168.10.2
 epistula.zitohouse.net       A 192.168.10.2
 
 horreum.zitohouse.net        A 192.168.10.4
-syncthingrelay.zitohouse.net A 192.168.10.4
-syncthing.zitohouse.net      A 192.168.10.4
+syncthingrelay.zitohouse.net A 192.168.10.6
+syncthing.zitohouse.net      A 192.168.10.6
 
 automaton.zitohouse.net      A 192.168.10.5
 
 spectaculum.zitohouse.net    A 192.168.10.7
 theatre.zitohouse.net        A 192.168.10.7
 seerr.zitohouse.net          A 192.168.10.7
+harmonia.zitohouse.net       A 192.168.10.7
+visus.zitohouse.net          A 192.168.10.7
 
 vanguard.zitohouse.net       A 192.168.10.3
 occultus.zitohouse.net       A 192.168.10.3
 auctoritas.zitohouse.net     A 192.168.10.3
+
+praxis.zitohouse.net         A 192.168.10.6
+adventure.zitohouse.net      A 192.168.10.6
+adventure-api.zitohouse.net  A 192.168.10.6
 
 noxium.zitohouse.net         A 192.168.40.99
 radarr.zitohouse.net         A 192.168.40.99
@@ -109,6 +115,8 @@ torrent.zitohouse.net        A 192.168.40.99
 usenet.zitohouse.net         A 192.168.40.99
 
 labratorium.zitohouse.net    A 192.168.30.254
+
+praetorian.zitohouse.net     A 192.168.5.28
     '';
   };
 }
