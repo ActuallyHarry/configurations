@@ -30,12 +30,12 @@
     eth0 = {
       ipv4.addresses = [ { 
         address = "192.168.10.6";
-        prefixLength = 16;
+        prefixLength = 24;
       } ];
     };
   };
-  networking.defaultGateway = "192.168.0.1";
-  networking.nameservers = [ "192.168.10.2 192.168.0.1"];
+  networking.defaultGateway = "192.168.10.1";
+  networking.nameservers = [ "192.168.10.2"];
   networking.networkmanager.enable = true;
 
 

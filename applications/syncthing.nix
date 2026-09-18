@@ -54,12 +54,13 @@
         odyssey.id = "R4CG25Q-X25BPAA-LFDNMBV-HOJZMN7-G2RLFG5-E3YDK4J-IPA6KRM-BD6PQAS";
         nomadica.id = "HTH37O7-SPZWEER-GQIAYRA-XYQHL3W-SHH75XC-NZAMQVX-5PQC5ZI-WUQ53AD";
         praetorian.id = "JN73VRQ-HN42G3K-R5ISK5X-OATIROP-CHG26QZ-EZ2CFON-U5OYYM4-RKHRKAG";
+        praxis.id = "JHBL47U-S3THV4O-Q56WANP-LELABQ7-EMEDIFK-HGOXIN2-63FAVJ4-VTXGAQA";
       };
 
       folders = {
        "synced-harry" = {
          path = "/mnt/syncthing/harry";
-         devices = [ "odyssey" "nomadica" "praetorian"];
+         devices = [ "odyssey" "nomadica" "praetorian" "praxis"];
        };
       };
     };
