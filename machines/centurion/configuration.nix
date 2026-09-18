@@ -33,25 +33,25 @@
 
   networking.hostName = "centurion";
   networking.useDHCP = false;
-  networking.interfaces = {
-    enp0s31f6 = {
-       useDHCP = false;
-    };
-    br0 = {
-      ipv4.addresses = [ {
-        address = "192.168.90.253";
-        prefixLength = 16;
-      } ];
-    };
+  networking.interfaces.enp0s31f6.useDHCP = false;
+  networking.bridges.br0.interfaces = ["enp0s31f6"];   
+  networking.vlans.management = {
+  	id = 90;
+        interface = "br0";
   };
-
-  networking.bridges.br0.interfaces = ["enp0s31f6"];
- 
+  networking.interfaces.management = {
+    useDHCP = false;
+    ipv4.addresses = [ {
+      address = "192.168.90.253";
+      prefixLength = 24;
+    } ];
+  };
+    
   networking.defaultGateway = {
-    address= "192.168.0.1";
-    interface= "br0";
+    address= "192.168.90.1";
+    interface= "management";
   };
-  networking.nameservers = [ "192.168.10.2 192.168.0.1"];
+  networking.nameservers = [ "192.168.10.2"];
   networking.networkmanager.enable = true;
 
 
