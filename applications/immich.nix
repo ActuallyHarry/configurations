@@ -21,12 +21,20 @@
   services.nginx = {
     enable = true;
     virtualHosts."visus.zitohouse.net" = {
+      serverName = "visus";
+      serverAliases = ["visus.zitohouse.net"];
       # Add ACME/SSL settings here if you use them, e.g.:
        forceSSL = true;
-       enableACME = true;
+       enableACME = false;
 
 sslCertificate = "/var/lib/acme/home-wildcard/fullchain.pem";
       sslCertificateKey = "/var/lib/acme/home-wildcard/key.pem";
+
+extraConfig = ''
+        add_header Strict-Transport-Security "max-age=6307200" always;
+        real_ip_header CF-Connecting-IP;
+        set_real_ip_from 192.168.10.2;
+      '';
 
       locations."/" = {
         # Proxy to local Immich instance
