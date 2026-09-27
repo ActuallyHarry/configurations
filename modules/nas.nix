@@ -21,7 +21,7 @@ environment.systemPackages = [ pkgs.nfs-utils ];
 # 2. Configure the NFS mount on the Host
 fileSystems."/mnt/host-media" = {
   # NFS format: "IP:/path/on/nas"
-  device = "192.168.0.144:/volume2/media"; 
+  device = "192.168.10.4:/volume2/media"; 
   fsType = "nfs";
   options = [
     "nodev"
@@ -40,7 +40,7 @@ fileSystems."/mnt/host-media" = {
 
 fileSystems."/mnt/host-syncthing" = {
   # NFS format: "IP:/path/on/nas"
-  device = "192.168.0.144:/volume1/syncthing";
+  device = "192.168.10.4:/volume1/syncthing";
   fsType = "nfs";
   options = [
     "nodev"
