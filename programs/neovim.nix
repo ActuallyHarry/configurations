@@ -25,6 +25,12 @@
       };
 
       # Core Utilities
+
+      startPlugins = with pkgs.vimPlugins; [
+        plenary-nvim
+        nvim-treesitter
+      ];
+
       statusline.lualine.enable = true;
       filetree.neo-tree = {
         enable = true;
@@ -71,10 +77,43 @@
         bash.enable = true;
         markdown.enable = true;
       };
+
+      # Code Assistance
       autocomplete.blink-cmp = {
         enable = true;
         setupOpts = {
           signature.enabled = true;
+        };
+      };
+
+      assistant.codecompanion-nvim = {
+        enable = true;
+        setupOpts = {
+          interactions = {
+            chat.adapter = "ollama";
+            inline.adapter = "ollama";
+            agent.adapter = "ollama";
+          };
+          adapters = lib.mkLuaInline ''
+	  {
+            ollama = function()
+              return require("codecompanion.adapters").extend("ollama", {
+                env = {
+                  url = "http://127.0.0.1:11434",
+                },
+                schema = {
+                  model = {
+                    default = "qwen3.5:9b",
+                  },
+
+                  num_ctx = {
+                    default = 16384,
+                  },
+                },
+              })
+              end,
+	   }
+          '';
         };
       };
 

@@ -27,6 +27,8 @@
     ../../applications/games.nix
     ../../applications/ai.nix
     ../../applications/sunshine.nix
+    ../../applications/syncthing-ports.nix
+    ../../applications/docker.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

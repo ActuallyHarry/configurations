@@ -9,7 +9,7 @@
       "obsidian"
     ];
 
-  home.packages = with pkgs; [obsidian];
+  home.packages = with pkgs; [obsidian pandoc];
 
   stylix.targets.obsidian.enable = true;
   #programs.obsidian = {
