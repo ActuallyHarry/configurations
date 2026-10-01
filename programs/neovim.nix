@@ -28,10 +28,14 @@
 
       startPlugins = with pkgs.vimPlugins; [
         plenary-nvim
-        nvim-treesitter
       ];
 
       statusline.lualine.enable = true;
+
+      tabline.nvimBufferline = {
+        enable = true;
+      };
+
       filetree.neo-tree = {
         enable = true;
         setupOpts.filesystem.filtered_items.visible = true;
@@ -50,7 +54,7 @@
       binds.whichKey.enable = true;
 
       git = {
-        enable = true;
+        enable = false;
       };
 
       clipboard = {
@@ -95,38 +99,37 @@
             agent.adapter = "ollama";
           };
           adapters = lib.mkLuaInline ''
-	  {
-            ollama = function()
-              return require("codecompanion.adapters").extend("ollama", {
-                env = {
-                  url = "http://127.0.0.1:11434",
-                },
-                schema = {
-                  model = {
-                    default = "qwen3.5:9b",
-                  },
+            {
+                     ollama = function()
+                       return require("codecompanion.adapters").extend("ollama", {
+                         env = {
+                           url = "https://cognitus.zitohouse.net:443",
+                         },
+                         schema = {
+                           model = {
+                             default = "qwen3.5:9b",
+                           },
 
-                  num_ctx = {
-                    default = 16384,
-                  },
-                },
-              })
-              end,
-	   }
+                           num_ctx = {
+                             default = 16384,
+                           },
+                         },
+                       })
+                       end,
+             }
           '';
         };
       };
 
       # Keymaps
       keymaps = [
-        # File Explorer
+        # Navigation and Finding
         {
           key = "<leader>e";
           mode = "n";
           action = ":Neotree toggle<CR>";
           desc = "Toggle Explorer";
         }
-        # Telescope
         {
           key = "<leader>ff";
           mode = "n";
@@ -151,7 +154,26 @@
           action = ":Telescope help_tags<CR>";
           desc = "Help Tags";
         }
-        # Terminal
+        {
+          key = "<leader>bn";
+          mode = "n";
+          action = ":bnext<CR>";
+          desc = "Next Buffer";
+        }
+        {
+          key = "<leader>bp";
+          mode = "n";
+          action = ":bprevious<CR>";
+          desc = "Previous Buffer";
+        }
+        {
+          key = "<leader>br";
+          mode = "n";
+          action = ":bdelete<CR>";
+          desc = "Close Current Buffer";
+        }
+
+        # Terminal & Git
         {
           key = "<leader>t";
           mode = "n";
@@ -170,12 +192,25 @@
           action = ":ToggleTerm direction=horizontal<CR>";
           desc = "Toggle Horizontal Terminal";
         }
-        # Lazy Git
         {
           key = "<leader>g";
           mode = "n";
           action = ":ToggleTerm cmd=lazygit<CR>";
           desc = "Launch Lazygit";
+        }
+        # Code Companion
+        # CodeCompanion Keymaps
+        {
+          key = "<leader>ca";
+          mode = "n";
+          action = ":CodeCompanionActions<CR>";
+          desc = "Toggle Inline CodeCompanion Chat";
+        }
+        {
+          key = "<leader>cc";
+          mode = "n";
+          action = ":CodeCompanionChat<CR>";
+          desc = "Toggle CodeCompanion Chat Sidebar";
         }
       ];
     };

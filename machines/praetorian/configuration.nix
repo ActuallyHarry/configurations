@@ -20,6 +20,8 @@
     ../../modules/desktop.nix
     ../../modules/zsh.nix
     ../../modules/nvidia.nix
+    ../../modules/ssl_wildcard.nix
+    ../../modules/sops.nix
     # Applications
     ../../applications/git.nix
     ../../applications/core.nix
@@ -36,7 +38,20 @@
 
   networking.hostName = "praetorian";
   networking.networkmanager.enable = true;
-
+  networking.networkmanager.ensureProfiles.profiles = {
+    "enp7s0-static" = {
+      connection = {
+        id = "enp7s0-static";
+        type = "ethernet";
+        interface-name = "enp7s0";
+        autoconnect = "true";
+      };
+      ipv4 = {
+        method = "manual";
+        address1 = "192.168.10.8/24";
+      };
+    };
+  };
   users.users.harry = {
     isNormalUser = true;
     description = "harry";
